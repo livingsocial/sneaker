@@ -20,7 +20,7 @@ Ready to get moving?
 `Sneaker.Box` is an array-like object that implements the gamut of ES5 array methods.  To get the full capabilities of this object in older browsers, [drop in this shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js).  Hitting such methods in older browsers that don't support them, without using shims, will see `Box` return `undefined` from those methods.
 
 ###Read up
-Lots of useful words have been crammed in the [Wiki](sneaker-js/wiki).
+Lots of useful words have been crammed in the [Wiki](https://github.com/livingsocial/sneaker/wiki).
 
 ###Version Up
 0.8.1 - May 16 2013
