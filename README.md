@@ -1,23 +1,25 @@
 #Sneaker.coffee
 
-Sneaker is object-oriented, highly testable jQuery.  Bring some structure to your jQuery-based user interfaces.
+Sneaker is object-oriented, highly testable jQuery.
 
-+ **Extends jQuery.** Sneaker lends object-oriented organization to the main purposes of jQuery.  Contrary to other sales pitches flying about - you ***can*** write well structured code that, at its core, leverages jQuery, and Sneaker will help you.
-+ **Written for CoffeeScript.** Sneaker takes full advantage of CoffeeScript's `class` idiom to produce an object definition pattern that can be expressive, legible, and self-documenting.
-+ **Jasmine-friendly, with mocks.** Sneaker comes with a bundle of handy Jasmine matchers.  More importantly, the `API` class comes with mocking built-in, allowing for simple acceptance tests, or for use in development when an API isn't quite ready yet.
-+ **Architecture-neutral.** Sneaker doesn't reduce your job to manipulating the magic inside a black-box application object, reaching towards a rough approximation of your intended experience.  Write exactly what you intend to have happen.
-+ **Don't call it a framework.** So many frameworks seem bent on fabricating entirely new architecture vocabularies and reimplementing just about everything.  The intention with Sneaker is to fit within your current approach, whatever that may be, to help you write legible, testable code.  Sneaker's individual bits work well alone, but are better when used together to define an entire user interface.
++ **Extends jQuery.** jQuery shouldn't be synonymous with spaghetti; Sneaker lends simple structure to the best of jQuery.
++ **Written for CoffeeScript.** Sneaker provides an object definition pattern geared towards legibility and self-documentation.
++ **Jasmine-friendly, with mocks.** Sneaker's `API` object has the notion of mocking responses built-in, to aid in both development and testing; and the library comes with a bundle of handy Jasmine matchers.  
++ **Architecture-neutral.** Your job shouldn't be reduced to manipulating the magic inside a black-box application object, reaching towards a rough approximation of your intended experience.  Write exactly what you intend to have happen.
++ **Don't call it a framework.** Sneaker has no interest in reinventing, reimplementing, or revolutionizing.  Sneaker doesn't try to save developers from themselves.  The intention with Sneaker is to bring greater clarity to your current approach through a small set of independently useful bits; nudging you towards legible, testable code that those who inherit your project will thank you for, instead of burning effigies in your likeness.
 
 Ready to get moving?
 
 ###Lace up
-`sneaker.coffee` included in your project, as you would any other vendored script, is the minimum you need to get moving.
+1. Include `sneaker.coffee` as you would any other vendored script.
 
-[`jQuery >= 1.8`](http://jquery.com/download/) is a hard dependency.  Obviously, since Sneaker is written to extend jQuery, Sneaker won't work without it.
+2. [`jQuery 1.8 or later`](http://jquery.com/download/) is required.
 
-`sneaker-matchers.coffee` is a collection of Jasmine matchers (if you're into that sort of thing, which you should be).  Some of these matchers utilize [`Lo-Dash >= 1.0.1`](https://github.com/bestiejs/lodash/blob/master/lodash.js); drop that into your spec manifest for best results.
+3. For testing with Jasmine, include `sneaker-matchers.coffee` into your spec manifest.
 
-`Sneaker.Box` is an array-like object that implements the gamut of ES5 array methods.  To get the full capabilities of this object in older browsers, [drop in this shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js).  Hitting such methods in older browsers that don't support them, without using shims, will see `Box` return `undefined` from those methods.
+4. [`Lo-Dash >= 1.0.1`](https://github.com/bestiejs/lodash/blob/master/lodash.js) is used by some of the matchers.
+
+5. [This ES5 shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js) is recommended if you need to support browsers that aren't fully down with ES5 arrays, so that `Sneaker.Box` is fully functional.
 
 ###Read up
 Lots of useful words have been crammed in the [Wiki](https://github.com/livingsocial/sneaker/wiki).
