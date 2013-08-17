@@ -39,16 +39,20 @@ Sneaker surely wouldn't be a thing without the consideration and input of Kevin 
 
 ###Contributing
 Source code is found under `/source`.  Tests are found under `/tests`.
-Release candidates are queued up on the branch named `next` - pull requests for contributions should be pointed there.  Branch `master` represents the current release version.
 
 ###Testing
-`guard`
+```bash
+$ bundle
+$ bundle exec guard
+```
 
 Gems `guard-jasmine` and `jasminerice` employed to run tests.
 While guard is running, the coffeescript will be compiled to the same file name under `/compiled`, if you'd like to look it over.
 
 ###Building
-`rake build`
+```bash
+$ bundle exec rake build
+```
 
 Concatenates the coffeescript source to `sneaker.coffee`.
 Compiled javascript written to `sneaker.js`.
