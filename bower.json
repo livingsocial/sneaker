@@ -1,0 +1,28 @@
+{
+  "name": "sneaker",
+  "version": "0.8.1",
+  "main": "sneaker.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components",
+    "bower_components",
+    "test",
+    "tests",
+    "headers",
+    "source",
+    "spec",
+    "vendor",
+    "config.ru",
+    "Guardfile",
+    "Gemfile",
+    "Gemfile.lock",
+    "Rakefile"
+  ],
+  "keywords": [
+    "javascript",
+    "jquery",
+    "coffeescript",
+    "oop"
+  ]
+}
