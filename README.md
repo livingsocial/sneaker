@@ -25,7 +25,7 @@ Ready to get moving?
 Lots of useful words have been crammed in the [Wiki](https://github.com/livingsocial/sneaker/wiki).
 
 ###Version Up
-0.8.1 - May 16 2013
+0.8.2 - Aug 31 2013
 
 ###Tested up
 + Firefox >= 4.0.1
