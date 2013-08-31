@@ -299,7 +299,10 @@ describe 'Sneaker Core', ->
       it 'the callback is called with just the args indicated in indices if provided', ->
         class Foo extends Sneaker.Core
           @has_init 'bar', [1,2], (@x, @y) ->
-        expect( (new Foo 'a','b','c').y ).toBe 'c'
+          @has_init 'baz', [0], (@z) ->
+        foo = new Foo 'a', 'b', 'c'
+        expect( foo.y ).toBe 'c'
+        expect( foo.z ).toBe 'a'
       it 'checks to see if indicies (if provided) is an array and throws', ->
         expect( ->
           class Foo extends Sneaker.Core
