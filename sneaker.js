@@ -1,6 +1,6 @@
 /*
 Sneaker UI Library
-Version 0.8.1
+Version 0.8.2
 
 Copyright 2013 LivingSocial, Inc.
 Released under the MIT license
@@ -319,11 +319,11 @@ if (!Array.prototype.indexOf) {
     run_bookends = function(end, args) {
       var already_ran, bookend, ordered, run_an_bookend, skip, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
       run_an_bookend = function(name, original_arguments) {
-        var index, indicies;
+        var index, indicies, use_args;
         if (this[Sneaker.convention["" + end + "Name"](name)] != null) {
           indicies = this[Sneaker.convention["" + end + "Name"](name)][1];
           if ((indicies != null ? indicies.length : void 0) > 0) {
-            args = (function() {
+            use_args = (function() {
               var _i, _len, _results;
               _results = [];
               for (_i = 0, _len = indicies.length; _i < _len; _i++) {
@@ -333,9 +333,9 @@ if (!Array.prototype.indexOf) {
               return _results;
             })();
           } else {
-            args = original_arguments;
+            use_args = original_arguments;
           }
-          return this[Sneaker.convention["" + end + "Name"](name)][0].apply(this, args);
+          return this[Sneaker.convention["" + end + "Name"](name)][0].apply(this, use_args);
         }
       };
       switch (end) {

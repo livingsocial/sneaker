@@ -1,6 +1,6 @@
 /*
 Sneaker UI Library Jasmine Matchers
-Version 0.8.1
+Version 0.8.2
 
 Copyright 2013 LivingSocial, Inc.
 Released under the MIT license

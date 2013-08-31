@@ -1,6 +1,6 @@
 ###
 Sneaker UI Library
-Version 0.8.1
+Version 0.8.2
 
 Copyright 2013 LivingSocial, Inc.
 Released under the MIT license
@@ -199,11 +199,11 @@ class SneakerCore
       if @[Sneaker.convention["#{end}Name"] name]?
         indicies = @[Sneaker.convention["#{end}Name"] name][1]
         if indicies?.length > 0
-          args = for index in indicies
+          use_args = for index in indicies
             original_arguments[index]
         else
-          args = original_arguments
-        @[Sneaker.convention["#{end}Name"] name][0].apply this, args
+          use_args = original_arguments
+        @[Sneaker.convention["#{end}Name"] name][0].apply this, use_args
 
     switch end
       when 'init', 'quit'
