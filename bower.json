@@ -1,7 +1,7 @@
 {
   "name": "sneaker",
   "version": "0.8.2",
-  "main": "sneaker.js",
+  "main": "sneaker.coffee",
   "ignore": [
     "**/.*",
     "node_modules",
