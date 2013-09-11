@@ -1,7 +1,6 @@
 require 'action_controller/railtie'
 require 'jasminerice'
 require 'sprockets/railtie'
-require 'jquery-rails'
 
 class JasmineTest < Rails::Application
   routes.append do
