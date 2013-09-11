@@ -284,7 +284,7 @@ describe 'Sneaker View', ->
           expect( (new Foo).dom.base.length ).toBe 0
 
       it 'assigns the anchor to @dom.base if one is provided and there isnt a base', ->
-        loadFixtures 'view'
+        $('<div class="view"></div>').appendTo('body')
         class Foo extends Sneaker.View
           @has_anchor '.view'
         expect( (new Foo).dom.base.filter('.view').length ).toBe 1
@@ -292,7 +292,7 @@ describe 'Sneaker View', ->
 
   describe 'on #quit', ->
     it 'removes the local DOM (View: remove DOM)', ->
-      loadFixtures 'view'
+      $('<div class="view"></div>').appendTo('body')
       class Foo extends Sneaker.View
         @has_base -> '<div class="foo"></div>'
       foo = new Foo
