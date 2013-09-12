@@ -57,21 +57,21 @@ describe 'Jasmine matchers for Sneaker', ->
     it 'can test whether a class is written to listen for a DOM event of a particular type/hook combination', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
-        @listens_for 'click', 'a', ->
+        @has_listener 'click', 'a', ->
       expect( Foo ).toListenFor 'click', 'a'
     it 'can test whether a class is not written to listen for a DOM event of a particular type/hook combination', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
-        @listens_for 'mouseover', 'a', ->
+        @has_listener 'mouseover', 'a', ->
       expect( Foo ).not.toListenFor 'click', 'a'
     it 'has an alias #toHaveListener', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
-        @listens_for 'click', 'a', ->
+        @has_listener 'click', 'a', ->
       expect( Foo ).toHaveListener 'click', 'a'
       class Foo extends Sneaker.View
         @has_hook a: '.a'
-        @listens_for 'mouseover', 'a', ->
+        @has_listener 'mouseover', 'a', ->
       expect( Foo ).not.toHaveListener 'click', 'a'
 
 

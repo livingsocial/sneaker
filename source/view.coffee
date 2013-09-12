@@ -20,11 +20,9 @@ Sneaker.View = class SneakerView extends Sneaker.Core
       hook: hook
       fn: callbackName
 
-  @listens_for: @has_listener
-
   @has_hook: (hooksHash) ->
     Sneaker.util.type hooksHash, 'object',
-     '@has_hook expects to be passed a hash of name/selector pairs'
+     '@has_hook expects to be passed a hash (with nested hashes) of name/selector pairs'
     hooks = Sneaker.ref.hooksName()
     @::[hooks] = jQuery.extend true, {}, @::[hooks], hooksHash
 
@@ -109,15 +107,29 @@ Sneaker.View = class SneakerView extends Sneaker.Core
     template = @[Sneaker.ref.templateName name]
     new Sneaker.Press( template, @dom ) if template?
 
-  detach: -> @__localDom.detach()
-  remove: -> @__localDom.remove()
-  show:   -> @__localDom.show()
-  hide:   -> @__localDom.hide()
+  detach: ->
+    @__localDom.detach()
 
-  appendTo:   (container) -> @__moving 'appendTo', container
-  prependTo:  (container) -> @__moving 'prependTo', container
-  insertAfter:  (sibling) -> @__moving 'insertAfter', sibling
-  insertBefore: (sibling) -> @__moving 'insertBefore', sibling
+  remove: ->
+    @__localDom.remove()
+
+  show:   ->
+    @__localDom.show()
+
+  hide:   ->
+    @__localDom.hide()
+
+  appendTo:   (container) ->
+    @__moving 'appendTo', container
+
+  prependTo:  (container) ->
+    @__moving 'prependTo', container
+
+  insertAfter:  (sibling) ->
+    @__moving 'insertAfter', sibling
+
+  insertBefore: (sibling) ->
+    @__moving 'insertBefore', sibling
 
   #====================================#
 

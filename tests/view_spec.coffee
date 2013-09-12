@@ -54,8 +54,6 @@ describe 'Sneaker View', ->
   describe '@has_listener( types, hook, fn )', ->
     it 'has constructor method @has_listener', ->
       expect( Sneaker.View.has_listener ).toBeDefined()
-    it 'has an alias @listens_for', ->
-      expect( Sneaker.View.listens_for ).toBe Sneaker.View.has_listener
 
     it 'provides the constructor with instructions for setting up delegated DOM event handlers', ->
       class Foo extends Sneaker.View
