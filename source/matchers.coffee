@@ -31,15 +31,6 @@ beforeEach ->
             found = true
     found
 
-  toBox = (boxName, box = Sneaker.Box) ->
-    nt = if @isNot then 'not have' else 'have'
-    name = @actual.name
-    @message = -> "Expected #{name} to #{nt} a box at #{name}"
-    boxes = @actual::[Sneaker.ref.boxesName()]
-    if boxes?
-      boxes[boxName] is box and (new @actual)[boxName] instanceof box
-    else false
-
   toTemplate = (expected) ->
     name = @actual.name
     template = @actual::[Sneaker.ref.templateName expected]
@@ -59,9 +50,6 @@ beforeEach ->
 
     toListenFor: toListenFor
     toHaveListener: toListenFor
-
-    toBox: toBox
-    toHaveBox: toBox
 
     toTemplate: toTemplate
     toHaveTemplate: toTemplate

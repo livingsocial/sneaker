@@ -273,7 +273,7 @@ describe 'Sneaker View', ->
       foo.quit()
       expect( $('.anchor .stuff').length ).toBe 0
       expect( $('.anchor').length ).toBe 1
-      
+
 
 
   describe '#rehook()', ->

@@ -1,4 +1,4 @@
-class SneakerApiMock
+Sneaker.ApiMock = class SneakerApiMock
 
   @has_response: (name, fn) ->
     Sneaker.util.type name, 'string', '@response expects `name` to be a string'
@@ -59,5 +59,3 @@ class SneakerApiMock
       jQuery.Deferred().resolveWith this, [mockedResponse.body, statusCodes[status], {}]
     else
       jQuery.Deferred().rejectWith this, [{}, statusCodes[status], new Error statusCodes[status]]
-
-Sneaker.ns.set this, 'Sneaker.ApiMock', SneakerApiMock

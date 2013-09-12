@@ -1,6 +1,6 @@
-this.Sneaker ||= {}
+@Sneaker = {}
 
-this.Sneaker.ref =
+Sneaker.ref =
   anchorName:                       -> "__anchor"
   boxesName:                        -> "__boxes"
   handlerName:               (name) -> "__handle_#{name}"
@@ -22,7 +22,7 @@ this.Sneaker.ref =
   templateName:              (name) -> "__template_#{name}"
 
 
-this.Sneaker.util =
+Sneaker.util =
   type: (thing, type, error) ->
     if type isnt jQuery.type thing
       Sneaker.util.throw error
@@ -46,7 +46,7 @@ this.Sneaker.util =
         'If @has_module_setup is defined on a module to be installed, it must be a function'
       module.has_module_setup.apply target
 
-this.Sneaker.ns =
+Sneaker.ns =
   get: (object, path) ->
     tokens = Sneaker.ns.tokens path
     obj = object
@@ -72,10 +72,7 @@ this.Sneaker.ns =
       else []
 
 
-class SneakerCore
-
-  constructor: ->
-    @init.apply this, arguments
+Sneaker.Core = class SneakerCore
 
   @has_handler: (phrase, fn) ->
     Sneaker.util.type phrase, 'string',
@@ -86,69 +83,86 @@ class SneakerCore
     @::[Sneaker.ref.handlerName phrase] = fn
     return
 
+  @has_init: (name, callback_pack...) ->
+    __has_bookend.call this, 'init', name, callback_pack
+
+  @has_init_order: (order) ->
+    __has_bookend_order.call this, 'init', order
+
+  @skips_init: (name) ->
+    __skips_bookend.call this, 'init', name
+
+  @runs_init: (name) ->
+    __runs_bookend.call this, 'init', name
+
+  @has_quit: (name, callback_pack...) ->
+    __has_bookend.call this, 'quit', name, callback_pack
+
+  @has_quit_order: (order) ->
+    __has_bookend_order.call this, 'quit', order
+
+  @skips_quit: (name) ->
+    __skips_bookend.call this, 'quit', name
+
+  @runs_quit: (name) ->
+    __runs_bookend.call this, 'quit', name
+
+  #====================================#
+
+  constructor: ->
+    @init.apply this, arguments
+
   handle: (phrase, eventAttributes) ->
     if Sneaker.util.type phrase, 'string'
       handler = @[Sneaker.ref.handlerName phrase]
       handler.call @, eventAttributes if handler?
 
+  init: ->
+    __run_bookends.call this, 'init', arguments
 
-  has_bookend = (end, name, callback_pack) ->
-    switch end
-      when 'init', 'quit'
-        if callback_pack.length is 1
-          callback = callback_pack[0]
-          indicies = []
-        else
-          callback = callback_pack[1]
-          indicies = callback_pack[0]
-        Sneaker.util.type indicies, 'array',
-          "@has_#{end} expects provided indicies to be an array"
-        Sneaker.util.type callback, 'function',
-          "@has_#{end} expects the callback to be a function"
-        @::[Sneaker.ref["#{end}Name"] name] = [callback, indicies]
-        collection = Sneaker.ref["#{end}sName"]()
-        @::[collection] = if @::[collection] then @::[collection][..] else []
-        @::[collection].push name
-        @::[collection] = Sneaker.util.uniq @::[collection]
-    return
+  quit: ->
+    __run_bookends.call this, 'quit', arguments
 
-  has_bookend_order = (end, order) ->
-    switch end
-      when 'init', 'quit'
-        Sneaker.util.type order, 'array',
-          "@has_#{end}_order expects an array"
-        @::[Sneaker.ref["#{end}sOrderName"]()] = order
-    return
+  #====================================#
 
-  skips_bookend = (end, name) ->
-    switch end
-      when 'init', 'quit'
-        skip = Sneaker.ref["#{end}sSkipName"]()
-        @::[skip] = if @::[skip] then @::[skip][..] else []
-        @::[skip].push name
-    return
+  __has_bookend = (end, name, callback_pack) ->
+    if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
+      if callback_pack.length is 1
+        callback = callback_pack[0]
+        indicies = []
+      else
+        callback = callback_pack[1]
+        indicies = callback_pack[0]
+      Sneaker.util.type indicies, 'array',
+        "@has_#{end} expects provided indicies to be an array"
+      Sneaker.util.type callback, 'function',
+        "@has_#{end} expects the callback to be a function"
+      @::[Sneaker.ref["#{end}Name"] name] = [callback, indicies]
+      collection = Sneaker.ref["#{end}sName"]()
+      @::[collection] = if @::[collection] then @::[collection][..] else []
+      @::[collection].push name
+      @::[collection] = Sneaker.util.uniq @::[collection]
 
-  runs_bookend = (end, name) ->
-    switch end
-      when 'init', 'quit'
-        skip = Sneaker.ref["#{end}sSkipName"]()
-        @::[skip] = if @::[skip] then @::[skip][..] else []
-        index = @::[skip].indexOf name
-        @::[skip].splice index, 1 if index >= 0
-    return
+  __has_bookend_order = (end, order) ->
+    if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
+      Sneaker.util.type order, 'array',
+        "@has_#{end}_order expects an array"
+      @::[Sneaker.ref["#{end}sOrderName"]()] = order
 
-  @has_init: (name, callback_pack...) -> has_bookend.call this, 'init', name, callback_pack
-  @has_init_order: (order) -> has_bookend_order.call this, 'init', order
-  @skips_init: (name) -> skips_bookend.call this, 'init', name
-  @runs_init: (name) -> runs_bookend.call this, 'init', name
+  __skips_bookend = (end, name) ->
+    if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
+      skip = Sneaker.ref["#{end}sSkipName"]()
+      @::[skip] = if @::[skip] then @::[skip][..] else []
+      @::[skip].push name
 
-  @has_quit: (name, callback_pack...) -> has_bookend.call this, 'quit', name, callback_pack
-  @has_quit_order: (order) -> has_bookend_order.call this, 'quit', order
-  @skips_quit: (name) -> skips_bookend.call this, 'quit', name
-  @runs_quit: (name) -> runs_bookend.call this, 'quit', name
+  __runs_bookend = (end, name) ->
+    if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
+      skip = Sneaker.ref["#{end}sSkipName"]()
+      @::[skip] = if @::[skip] then @::[skip][..] else []
+      index = @::[skip].indexOf name
+      @::[skip].splice index, 1 if index >= 0
 
-
-  run_bookends = (end, args) ->
+  __run_bookends = (end, args) ->
     run_an_bookend = (name, original_arguments) ->
       if @[Sneaker.ref["#{end}Name"] name]?
         indicies = @[Sneaker.ref["#{end}Name"] name][1]
@@ -159,19 +173,12 @@ class SneakerCore
           use_args = original_arguments
         @[Sneaker.ref["#{end}Name"] name][0].apply this, use_args
 
-    switch end
-      when 'init', 'quit'
-        already_ran = []
-        for skip in (@[Sneaker.ref["#{end}sSkipName"]()] or [])
-          already_ran.push skip
-        for ordered in (@[Sneaker.ref["#{end}sOrderName"]()] or [])
-          run_an_bookend.call this, ordered, args unless already_ran.indexOf(ordered) >= 0
-          already_ran.push ordered
-        for bookend in (@[Sneaker.ref["#{end}sName"]()] or [])
-          run_an_bookend.call this, bookend, args unless already_ran.indexOf(bookend) >= 0
-    return
-
-  init: -> run_bookends.call this, 'init', arguments
-  quit: -> run_bookends.call this, 'quit', arguments
-
-Sneaker.ns.set this, 'Sneaker.Core', SneakerCore
+    if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
+      already_ran = []
+      for skip in (@[Sneaker.ref["#{end}sSkipName"]()] or [])
+        already_ran.push skip
+      for ordered in (@[Sneaker.ref["#{end}sOrderName"]()] or [])
+        run_an_bookend.call this, ordered, args unless already_ran.indexOf(ordered) >= 0
+        already_ran.push ordered
+      for bookend in (@[Sneaker.ref["#{end}sName"]()] or [])
+        run_an_bookend.call this, bookend, args unless already_ran.indexOf(bookend) >= 0

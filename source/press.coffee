@@ -1,4 +1,4 @@
-class SneakerPress extends Sneaker.Core
+Sneaker.Press = class SneakerPress extends Sneaker.Core
 
   constructor: (@templateFunction = (-> ''), @dom) ->
     Sneaker.util.type @templateFunction, 'function',
@@ -53,6 +53,3 @@ class SneakerPress extends Sneaker.Core
         else
           jQuery(target)[method] do @press
     this
-
-
-Sneaker.ns.set this, 'Sneaker.Press', SneakerPress

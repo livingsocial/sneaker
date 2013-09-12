@@ -1,4 +1,4 @@
-class SneakerView extends Sneaker.Core
+Sneaker.View = class SneakerView extends Sneaker.Core
 
   @has_listener: (types, hook, fn) ->
     Sneaker.util.type types, 'string',
@@ -19,22 +19,21 @@ class SneakerView extends Sneaker.Core
       types: types
       hook: hook
       fn: callbackName
-    return
+
   @listens_for: @has_listener
 
   @has_hook: (hooksHash) ->
     Sneaker.util.type hooksHash, 'object',
      '@has_hook expects to be passed a hash of name/selector pairs'
-
     hooks = Sneaker.ref.hooksName()
     @::[hooks] = jQuery.extend true, {}, @::[hooks], hooksHash
+
   @has_hooks: @has_hook
 
   @has_base: (templateFn) ->
     Sneaker.util.type templateFn, 'function',
       '@has_base expects to be passed a function'
     @::[Sneaker.ref.templateName 'base'] = templateFn
-    return
 
   @has_anchor: (selector) ->
     Sneaker.util.type name, 'string',
@@ -46,9 +45,7 @@ class SneakerView extends Sneaker.Core
       '@has_template expects the first argument to be a string'
     Sneaker.util.type fn, 'function',
       '@has_template expects the second argument to be a function'
-
     @::[Sneaker.ref.templateName name] = fn
-    return
 
   #====================================#
 
@@ -106,11 +103,11 @@ class SneakerView extends Sneaker.Core
               branch = Sneaker.ns.create @dom, tree
               branch[name] = jQuery selector, @__localDom
       recurse @[Sneaker.ref.hooksName()]
-    return
+    @dom
 
   render: (name) ->
     template = @[Sneaker.ref.templateName name]
-    return new Sneaker.Press( template, @dom ) if template?
+    new Sneaker.Press( template, @dom ) if template?
 
   detach: -> @__localDom.detach()
   remove: -> @__localDom.remove()
@@ -125,8 +122,6 @@ class SneakerView extends Sneaker.Core
   #====================================#
 
   __moving: ( jQueryMethod, target ) ->
-    if (['appendTo', 'prependTo', 'insertAfter', 'insertBefore'].some (method) -> ~jQueryMethod.indexOf method)
+    if( ['appendTo', 'prependTo', 'insertAfter', 'insertBefore'].some (valid) -> ~jQueryMethod.indexOf valid )
       wrapped_target = if target? then jQuery(target).first() else []
       @__localDom[jQueryMethod](wrapped_target) if wrapped_target.length is 1
-
-Sneaker.ns.set this, 'Sneaker.View', SneakerView

@@ -1,4 +1,4 @@
-class SneakerApi extends Sneaker.Core
+Sneaker.Api = Sneaker.API = class SneakerApi extends Sneaker.Core
 
   @has_default: (hash) ->
     Sneaker.util.type hash, 'object', '@default expects to be passed a hash of name/value pairs'
@@ -54,6 +54,3 @@ class SneakerApi extends Sneaker.Core
           Sneaker.ApiMock::respond responseMock.call this, merged, eventAttributes
         else
           jQuery.ajax merged
-
-Sneaker.ns.set this, 'Sneaker.Api', SneakerApi
-Sneaker.ns.set this, 'Sneaker.API', SneakerApi
