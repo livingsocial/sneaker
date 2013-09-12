@@ -57,7 +57,7 @@ Sneaker.View = class SneakerView extends Sneaker.Core
     @dom.base = @__localDom = if base?
       base.to_jQuery()
     else if anchor?
-      $(anchor)
+      $(anchor).first()
     else
       jQuery()
     do @rehook
