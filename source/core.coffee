@@ -36,17 +36,6 @@ Sneaker.util =
     value for key, value of output
   throw: (message) ->
     throw "Sneaker: #{message}, please" if message?
-  install: (module, target) ->
-    for key, method of module
-      if module.hasOwnProperty(key) and key isnt 'has_module_setup'
-        target[key] = module[key]
-    for key, method of module::
-      if module::.hasOwnProperty key
-        target::[key] = module::[key]
-    if module.has_module_setup?
-      Sneaker.util.type module.has_module_setup, 'function',
-        'If @has_module_setup is defined on a module to be installed, it must be a function'
-      module.has_module_setup.apply target
 
 Sneaker.ns =
   get: (object, path) ->
@@ -75,6 +64,18 @@ Sneaker.ns =
 
 
 Sneaker.Core = class SneakerCore
+
+  @include: (module) ->
+    for key, method of module
+      if module.hasOwnProperty( key ) and key isnt 'has_module_setup'
+        this[key] = module[key]
+    for key, method of module::
+      if module::.hasOwnProperty key
+        this::[key] = module::[key]
+    if module.has_module_setup?
+      Sneaker.util.type module.has_module_setup, 'function',
+        '@has_module setup, if defined on a module, must be a function'
+      module.has_module_setup.apply this
 
   @has_handler: (phrase, fn) ->
     Sneaker.util.type phrase, 'string',

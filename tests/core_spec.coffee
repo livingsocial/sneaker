@@ -17,35 +17,6 @@ describe 'Sneaker Core', ->
       it 'takes an array and returns it uniquified!', ->
         expect( Sneaker.util.uniq [1,1,2,3,3,4,4] ).toEqual [1,2,3,4]
 
-    describe 'Sneaker module installation routine', ->
-      it 'resides at Sneaker.util.install', ->
-        expect( Sneaker.util.install ).toBeDefined()
-
-      it 'runs through prototype methods and adds them to the target class', ->
-        class Foo
-        class FooModule
-          bar: ->
-          baz: ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo::bar ).toBeDefined()
-        expect( Foo::baz ).toBeDefined()
-
-      it 'runs through constructor methods and adds them to the target class', ->
-        class Foo
-        class FooModule
-          @bar: ->
-          @baz: ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo.bar ).toBeDefined()
-        expect( Foo.baz ).toBeDefined()
-
-      it 'looks for a special static function @has_module_setup and runs that against the target', ->
-        class Foo extends Sneaker.Core
-        class FooModule
-          @has_module_setup: ->
-            @has_init 'b', ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo::__inits.length ).toBe 1
 
   describe 'Namespace functions', ->
 
@@ -104,6 +75,34 @@ describe 'Sneaker Core', ->
   describe 'Sneaker Core object', ->
     it 'resides at Sneaker.Core on the global scope', ->
       expect( Sneaker.Core ).toBeDefined()
+
+    describe '@include( module )', ->
+      it 'has a constructor method @include for including modules', ->
+        expect( Sneaker.Core.include ).toBeDefined()
+      it 'runs through the constructor methods on the module object and adds them to this class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          @bar: ->
+          @baz: ->
+        Foo.include FooModule
+        expect( Foo.bar ).toBeDefined
+        expect( Foo.baz ).toBeDefined
+      it 'runs through the methods on the module object and adds them to the prototype of this class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          bar: ->
+          baz: ->
+        Foo.include FooModule
+        expect( Foo::bar ).toBeDefined()
+        expect( Foo::baz ).toBeDefined()
+      it 'looks for a special constructor method `@has_module_setup` and runs that against the class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          @has_module_setup: ->
+            @has_init 'b', ->
+        Foo.include FooModule
+        expect( Foo::__inits.length ).toBe 1
+
 
     describe '@has_handler( phrase, fn )', ->
 

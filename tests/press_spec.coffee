@@ -25,6 +25,8 @@ describe 'Sneaker Press', ->
         dom = {}
         foo = new Sneaker.Press undefined, dom
         expect( foo.dom ).toBe dom
+      it 'throws if @dom is not an object', ->
+        expect( -> new Sneaker.Press (->), 'string' ).toThrow()
 
     it 'assigns an empty object to @context', ->
       expect( _.isEqual (new Sneaker.Press).context, {} ).toBe true

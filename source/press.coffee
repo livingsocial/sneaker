@@ -3,6 +3,9 @@ Sneaker.Press = class SneakerPress extends Sneaker.Core
   constructor: (@templateFunction = (-> ''), @dom) ->
     Sneaker.util.type @templateFunction, 'function',
       'SneakerPress expects a function as its first argument'
+    if @dom?
+      Sneaker.util.type @dom, 'object',
+        'SneakerPress expects a hash (or a nested hash tree) of name:jQuery selections as its second argument'
 
     @context = {}
 
