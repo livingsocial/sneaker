@@ -164,11 +164,11 @@ describe 'Sneaker Core', ->
           @has_init 'bar', fn
         expect( Foo::__init_bar ).toBeDefined
         expect( Foo::__init_bar[0] ).toBe fn
-        expect( Foo::__init_bar[1] ).toMatch []
+        expect( Foo::__init_bar[1] ).toEqual []
       it 'adds the callback to the prototype with indicies', ->
         class Foo extends Sneaker.Core
           @has_init 'bar', [5,6], ->
-        expect( Foo::__init_bar[1] ).toMatch [5,6]
+        expect( Foo::__init_bar[1] ).toEqual [5,6]
       it 'adds the name to the end init array', ->
         class Foo extends Sneaker.Core
           @has_init 'bar', ->
@@ -218,13 +218,13 @@ describe 'Sneaker Core', ->
       it 'replaces the order array with the one provided', ->
         class Foo extends Sneaker.Core
           @has_init_order ['bar', 'baz']
-        expect( Foo::__inits_order ).toMatch ['bar', 'baz']
+        expect( Foo::__inits_order ).toEqual ['bar', 'baz']
         class Foo1 extends Foo
-        expect( Foo1::__inits_order ).toMatch ['bar', 'baz']
+        expect( Foo1::__inits_order ).toEqual ['bar', 'baz']
         class Foo2 extends Foo1
           @has_init_order ['baz', 'bar']
-        expect( Foo1::__inits_order ).toMatch ['bar', 'baz']
-        expect( Foo2::__inits_order ).toMatch ['baz', 'bar']
+        expect( Foo1::__inits_order ).toEqual ['bar', 'baz']
+        expect( Foo2::__inits_order ).toEqual ['baz', 'bar']
       it 'the callbacks are run in the order provided', ->
         class Foo extends Sneaker.Core
           @has_init 'foo', -> @x = 'foo'
@@ -246,7 +246,7 @@ describe 'Sneaker Core', ->
       it 'adds the name to the skip array', ->
         class Foo extends Sneaker.Core
           @skips_init 'bar'
-        expect( Foo::__inits_skip ).toMatch ['bar']
+        expect( Foo::__inits_skip ).toEqual ['bar']
       it 'does not run the callbacks in the skip array', ->
         class Foo extends Sneaker.Core
           @has_init 'a', -> @x = 'a'
@@ -260,8 +260,8 @@ describe 'Sneaker Core', ->
           @skips_init 'bar'
         class Goo extends Foo
           @runs_init 'bar'
-        expect( Foo::__inits_skip ).toMatch ['bar']
-        expect( Goo::__inits_skip ).toMatch []
+        expect( Foo::__inits_skip ).toEqual ['bar']
+        expect( Goo::__inits_skip ).toEqual []
       it 'runs the callback', ->
         class Foo extends Sneaker.Core
           @has_init 'a', -> @x = 1
@@ -280,11 +280,11 @@ describe 'Sneaker Core', ->
           @has_quit 'bar', fn
         expect( Foo::__quit_bar ).toBeDefined
         expect( Foo::__quit_bar[0] ).toBe fn
-        expect( Foo::__quit_bar[1] ).toMatch []
+        expect( Foo::__quit_bar[1] ).toEqual []
       it 'adds the callback to the prototype with indicies', ->
         class Foo extends Sneaker.Core
           @has_quit 'bar', [5,6], ->
-        expect( Foo::__quit_bar[1] ).toMatch [5,6]
+        expect( Foo::__quit_bar[1] ).toEqual [5,6]
       it 'adds the name to the end quit array', ->
         class Foo extends Sneaker.Core
           @has_quit 'bar', ->
@@ -337,13 +337,13 @@ describe 'Sneaker Core', ->
       it 'replaces the order array with the one provided', ->
         class Foo extends Sneaker.Core
           @has_quit_order ['bar', 'baz']
-        expect( Foo::__quits_order ).toMatch ['bar', 'baz']
+        expect( Foo::__quits_order ).toEqual ['bar', 'baz']
         class Foo1 extends Foo
-        expect( Foo1::__quits_order ).toMatch ['bar', 'baz']
+        expect( Foo1::__quits_order ).toEqual ['bar', 'baz']
         class Foo2 extends Foo1
           @has_quit_order ['baz', 'bar']
-        expect( Foo1::__quits_order ).toMatch ['bar', 'baz']
-        expect( Foo2::__quits_order ).toMatch ['baz', 'bar']
+        expect( Foo1::__quits_order ).toEqual ['bar', 'baz']
+        expect( Foo2::__quits_order ).toEqual ['baz', 'bar']
       it 'the callbacks are run in the order provided', ->
         class Foo extends Sneaker.Core
           @has_quit 'foo', -> @x = 'foo'
@@ -371,7 +371,7 @@ describe 'Sneaker Core', ->
       it 'adds the name to the skip array', ->
         class Foo extends Sneaker.Core
           @skips_quit 'bar'
-        expect( Foo::__quits_skip ).toMatch ['bar']
+        expect( Foo::__quits_skip ).toEqual ['bar']
       it 'does not run the callbacks in the skip array', ->
         class Foo extends Sneaker.Core
           @has_quit 'a', -> @x = 'a'
@@ -387,8 +387,8 @@ describe 'Sneaker Core', ->
           @skips_quit 'bar'
         class Goo extends Foo
           @runs_quit 'bar'
-        expect( Foo::__quits_skip ).toMatch ['bar']
-        expect( Goo::__quits_skip ).toMatch []
+        expect( Foo::__quits_skip ).toEqual ['bar']
+        expect( Goo::__quits_skip ).toEqual []
       it 'runs the callback', ->
         class Foo extends Sneaker.Core
           @has_quit 'a', -> @x = 1
