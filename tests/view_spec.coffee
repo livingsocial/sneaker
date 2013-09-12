@@ -113,39 +113,6 @@ describe 'Sneaker View', ->
             @has_listener 'click', 'wat', {bogus:'nonsense'}
         ).toThrow()
 
-
-    describe '@has_box( name, box )', ->
-      it 'has constructor method @has_box', ->
-        expect( Sneaker.View.has_box ).toBeDefined()
-
-      it 'adds the new box to the box hash in the prototype', ->
-        class Foo extends Sneaker.View
-          @has_box 'bar'
-        expect( Foo::__boxes ).toEqual {bar:Sneaker.Box}
-      it 'leads to the assignment (in constructor) of an empty object to @ref.boxes[name]', ->
-        class Foo extends Sneaker.View
-          @has_box 'bar'
-        expect( (new Foo).ref.boxes.bar ).toEqual (new Sneaker.Box)
-      it 'leads to the assignment (in constructor) of an instance variable to the box, of the same name, to get the box under the name argued', ->
-        class Foo extends Sneaker.View
-          @has_box 'bar'
-        expect( (new Foo).bar instanceof Sneaker.Box ).toBe true
-      it 'freaks out if `name` is not a string', ->
-        expect( ->
-          class Foo extends Sneaker.View
-            @has_box {}
-        ).toThrow()
-      it 'allows you to specify an extended box as the second argument', ->
-        class FooBox extends Sneaker.Box
-        class Foo extends Sneaker.View
-          @has_box 'bar', FooBox
-        expect( (new Foo).bar instanceof FooBox ).toBe true
-      it 'freaks out if `box` is not a box', ->
-        expect( ->
-          class Foo extends Sneaker.View
-            @has_box 'bar', ->
-        ).toThrow()
-
     describe '@has_base( templateFn )', ->
       it 'has constructor method @has_base', ->
         expect( Sneaker.View.has_base ).toBeDefined()

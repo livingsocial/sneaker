@@ -33,17 +33,6 @@ class SneakerView extends Sneaker.Core
     return
   @has_hooks: @has_hook
 
-  @has_box: (name, box = Sneaker.Box) ->
-    Sneaker.util.type name, 'string',
-      '@has_box expects to be passed a string for the box name'
-    if not ((new box) instanceof Sneaker.Box)
-      Sneaker.util.throw '@has_box expects the second argument to be a descendent of Sneaker.Box'
-      
-    boxes = Sneaker.ref.boxesName()
-    @::[boxes] = jQuery.extend true, {}, @::[boxes]
-    @::[boxes][name] = box
-    return
-
   @has_base: (templateFn) ->
     Sneaker.util.type templateFn, 'function',
       '@has_base expects to be passed a function'

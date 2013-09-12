@@ -61,11 +61,6 @@ describe 'Sneaker Core', ->
         Sneaker.ref.responseName = @restoreResponse
         Sneaker.ref.templateName = @restoreTemplate
 
-      it 'a different name for the boxes array may be defined', ->
-        Sneaker.ref.boxesName = -> '__cardboard'
-        class Foo extends Sneaker.View
-          @has_box 'recycles'
-        expect( Foo::__cardboard ).toBeDefined()
       it 'a different handler naming pattern may be defined', ->
         Sneaker.ref.handlerName = (name) -> "__yackadee_#{name}"
         class Foo extends Sneaker.View

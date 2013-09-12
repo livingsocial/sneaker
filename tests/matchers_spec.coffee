@@ -75,22 +75,6 @@ describe 'Jasmine matchers for Sneaker', ->
       expect( Foo ).not.toHaveListener 'click', 'a'
 
 
-  describe '#toBox', ->
-    it 'can test whether a class is written to setup a box at the given name', ->
-      class Foo extends Sneaker.View
-        @has_box 'bar'
-      expect( Foo ).toBox 'bar'
-    it 'can test whether a class is not written to setup a box at the given name', ->
-      class Foo extends Sneaker.View
-      expect( Foo ).not.toBox 'bar'
-    it 'has an alias #toHaveBox', ->
-      class Foo extends Sneaker.View
-        @has_box 'bar'
-      expect( Foo ).toHaveBox 'bar'
-      class Foo extends Sneaker.View
-      expect( Foo ).not.toHaveBox 'bar'
-
-
   describe '#toTemplate', ->
     it 'can test whether a class has a template with the given name', ->
       class Foo extends Sneaker.View
