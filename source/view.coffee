@@ -11,9 +11,8 @@ class SneakerView extends Sneaker.Core
     intrs = Sneaker.ref.interactionsName()
     @::[intrs] = if @::[intrs] then @::[intrs][..] else []
 
-    @intrs_cb_index ||= 0
-    callbackName = Sneaker.ref.interactionCallbackName @intrs_cb_index
-    @intrs_cb_index++
+    @callbackIndex ||= 0
+    callbackName = Sneaker.ref.interactionCallbackName @callbackIndex++
 
     @::[callbackName] = fn
     @::[intrs].push
@@ -27,10 +26,8 @@ class SneakerView extends Sneaker.Core
     Sneaker.util.type hooksHash, 'object',
      '@has_hook expects to be passed a hash of name/selector pairs'
 
-    @::[Sneaker.ref.hooksName()] = jQuery.extend( true,
-      {}, @::[Sneaker.ref.hooksName()], hooksHash
-    )
-    return
+    hooks = Sneaker.ref.hooksName()
+    @::[hooks] = jQuery.extend true, {}, @::[hooks], hooksHash
   @has_hooks: @has_hook
 
   @has_base: (templateFn) ->
@@ -56,20 +53,13 @@ class SneakerView extends Sneaker.Core
   #====================================#
 
   @has_init 'View: reference building', ->
-    @ref =
-      localDom: jQuery()
-      dom: {}
-    @dom = @ref.dom
-    if @[Sneaker.ref.boxesName()]
-      @ref.boxes = {}
-      for name, box of @[Sneaker.ref.boxesName()]
-        @ref.boxes[name] = new box
-        @[name] = @ref.boxes[name]
+    @__localDom = jQuery()
+    @dom = {}
 
   @has_init 'View: anchoring', ->
     base = @render('base')
     anchor = @[Sneaker.ref.anchorName()]
-    @dom.base = @ref.localDom = if base?
+    @dom.base = @__localDom = if base?
       base.to_jQuery()
     else if anchor?
       $(anchor)
@@ -93,55 +83,50 @@ class SneakerView extends Sneaker.Core
               "Listener setup failed; `#{interaction.hook}` is an invalid hook path, double check it"
             )
 
-  @has_quit 'View: remove DOM', -> do @remove
+  @has_quit 'View: remove DOM', ->
+    if @[Sneaker.ref.anchorName()]? then do @dom.base.empty else do @remove
 
   @has_quit 'View: clear ref', ->
-    delete @ref.localDom
-    delete @ref.dom
-    delete @ref.boxes
+    delete @__localDom
+    delete @dom
 
   #====================================#
 
   rehook: ->
     if @dom.base?
       tree = []
-      ref = @ref
-      recurse = (hooksObject) ->
+      recurse = (hooksObject) =>
         for name, selector of hooksObject
-          do (name, selector) ->
+          do (name, selector) =>
             if Sneaker.util.type selector, 'object'
               tree.push name
               recurse selector
               tree.pop()
-              return
             else if Sneaker.util.type selector, 'string'
-              branch = Sneaker.ns.create ref.dom, tree
-              branch[name] = jQuery selector, ref.localDom
-              return
-        return
+              branch = Sneaker.ns.create @dom, tree
+              branch[name] = jQuery selector, @__localDom
       recurse @[Sneaker.ref.hooksName()]
-      return
     return
 
   render: (name) ->
     template = @[Sneaker.ref.templateName name]
-    return new Sneaker.Press( template, @ref.dom ) if template?
-    return
+    return new Sneaker.Press( template, @dom ) if template?
 
-  appendTo:   (container) -> @moving 'appendTo', container
-  prependTo:  (container) -> @moving 'prependTo', container
-  insertAfter:  (sibling) -> @moving 'insertAfter', sibling
-  insertBefore: (sibling) -> @moving 'insertBefore', sibling
+  detach: -> @__localDom.detach()
+  remove: -> @__localDom.remove()
+  show:   -> @__localDom.show()
+  hide:   -> @__localDom.hide()
 
-  moving: ( jQueryMethod, target ) ->
-    switch jQueryMethod
-      when 'appendTo', 'prependTo', 'insertAfter', 'insertBefore'
-        wrapped_target = if target? then jQuery(target).first() else []
-        @ref.localDom[jQueryMethod](wrapped_target) if wrapped_target.length is 1
+  appendTo:   (container) -> @__moving 'appendTo', container
+  prependTo:  (container) -> @__moving 'prependTo', container
+  insertAfter:  (sibling) -> @__moving 'insertAfter', sibling
+  insertBefore: (sibling) -> @__moving 'insertBefore', sibling
 
-  detach: -> @ref.localDom.detach()
-  remove: -> @ref.localDom.remove()
-  show:   -> @ref.localDom.show()
-  hide:   -> @ref.localDom.hide()
+  #====================================#
+
+  __moving: ( jQueryMethod, target ) ->
+    if (['appendTo', 'prependTo', 'insertAfter', 'insertBefore'].some (method) -> ~jQueryMethod.indexOf method)
+      wrapped_target = if target? then jQuery(target).first() else []
+      @__localDom[jQueryMethod](wrapped_target) if wrapped_target.length is 1
 
 Sneaker.ns.set this, 'Sneaker.View', SneakerView

@@ -19,7 +19,7 @@ Ready to get moving?
 
 4. [`Lo-Dash >= 1.0.1`](https://github.com/bestiejs/lodash/blob/master/lodash.js) is used by some of the matchers.
 
-5. [This ES5 shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js) is recommended if you need to support browsers that aren't fully down with ES5 arrays, so that `Sneaker.Box` is fully functional.
+5. [This ES5 shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js) is recommended if you need to support browsers that aren't fully down with ES5 stuff (\*cough\* IE).
 
 ###Read up
 Lots of useful words have been crammed in the [Wiki](https://github.com/livingsocial/sneaker/wiki).
