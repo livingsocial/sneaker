@@ -5,16 +5,18 @@ Sneaker.ref =
   boxesName:                        -> "__boxes"
   handlerName:               (name) -> "__handle_#{name}"
   hooksName:                        -> "__hooks"
-  initName:                  (name) -> "__init_#{name}"
-  initsName:                        -> "__inits"
-  initsOrderName:                   -> "__inits_order"
-  initsSkipName:                    -> "__inits_skip"
+  init:
+    name:                    (name) -> "__init_#{name}"
+    collectionName:                 -> "__inits"
+    orderName:                      -> "__inits_order"
+    skipName:                       -> "__inits_skip"
   interactionCallbackName:  (index) -> "__interaction_cb_#{index}"
   interactionsName:                 -> "__interactions"
-  quitName:                  (name) -> "__quit_#{name}"
-  quitsName:                        -> "__quits"
-  quitsOrderName:                   -> "__quits_order"
-  quitsSkipName:                    -> "__quits_skip"
+  quit:
+    name:                    (name) -> "__quit_#{name}"
+    collectionName:                 -> "__quits"
+    orderName:                      -> "__quits_order"
+    skipName:                       -> "__quits_skip"
   requestDefaultsName:              -> "__requestDefaults"
   requestName:               (name) -> "__request_#{name}"
   responsesName:                    -> "__responses"
@@ -137,8 +139,8 @@ Sneaker.Core = class SneakerCore
         "@has_#{end} expects provided indicies to be an array"
       Sneaker.util.type callback, 'function',
         "@has_#{end} expects the callback to be a function"
-      @::[Sneaker.ref["#{end}Name"] name] = [callback, indicies]
-      collection = Sneaker.ref["#{end}sName"]()
+      @::[Sneaker.ref[end].name name] = [callback, indicies]
+      collection = Sneaker.ref[end].collectionName()
       @::[collection] = if @::[collection] then @::[collection][..] else []
       @::[collection].push name
       @::[collection] = Sneaker.util.uniq @::[collection]
@@ -147,38 +149,38 @@ Sneaker.Core = class SneakerCore
     if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
       Sneaker.util.type order, 'array',
         "@has_#{end}_order expects an array"
-      @::[Sneaker.ref["#{end}sOrderName"]()] = order
+      @::[Sneaker.ref[end].orderName()] = order
 
   __skips_bookend = (end, name) ->
     if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
-      skip = Sneaker.ref["#{end}sSkipName"]()
+      skip = Sneaker.ref[end].skipName()
       @::[skip] = if @::[skip] then @::[skip][..] else []
       @::[skip].push name
 
   __runs_bookend = (end, name) ->
     if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
-      skip = Sneaker.ref["#{end}sSkipName"]()
+      skip = Sneaker.ref[end].skipName()
       @::[skip] = if @::[skip] then @::[skip][..] else []
       index = @::[skip].indexOf name
       @::[skip].splice index, 1 if index >= 0
 
   __run_bookends = (end, args) ->
     run_an_bookend = (name, original_arguments) ->
-      if @[Sneaker.ref["#{end}Name"] name]?
-        indicies = @[Sneaker.ref["#{end}Name"] name][1]
+      if @[Sneaker.ref[end].name name]?
+        indicies = @[Sneaker.ref[end].name name][1]
         if indicies?.length > 0
           use_args = for index in indicies
             original_arguments[index]
         else
           use_args = original_arguments
-        @[Sneaker.ref["#{end}Name"] name][0].apply this, use_args
+        @[Sneaker.ref[end].name name][0].apply this, use_args
 
     if( ['init', 'quit'].some (valid) -> ~end.indexOf valid )
       already_ran = []
-      for skip in (@[Sneaker.ref["#{end}sSkipName"]()] or [])
+      for skip in (@[Sneaker.ref[end].skipName()] or [])
         already_ran.push skip
-      for ordered in (@[Sneaker.ref["#{end}sOrderName"]()] or [])
+      for ordered in (@[Sneaker.ref[end].orderName()] or [])
         run_an_bookend.call this, ordered, args unless already_ran.indexOf(ordered) >= 0
         already_ran.push ordered
-      for bookend in (@[Sneaker.ref["#{end}sName"]()] or [])
+      for bookend in (@[Sneaker.ref[end].collectionName()] or [])
         run_an_bookend.call this, bookend, args unless already_ran.indexOf(bookend) >= 0
