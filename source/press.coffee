@@ -1,4 +1,4 @@
-class SneakerPress
+class SneakerPress extends Sneaker.Core
 
   constructor: (@templateFunction = (-> ''), @dom) ->
     Sneaker.util.type @templateFunction, 'function',

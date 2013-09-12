@@ -8,11 +8,11 @@ class SneakerView extends Sneaker.Core
     Sneaker.util.type fn, 'function',
       '@has_listener expects the third argument to be a callback function'
 
-    intrs = Sneaker.convention.interactionsName()
+    intrs = Sneaker.ref.interactionsName()
     @::[intrs] = if @::[intrs] then @::[intrs][..] else []
 
     @intrs_cb_index ||= 0
-    callbackName = Sneaker.convention.interactionCallbackName @intrs_cb_index
+    callbackName = Sneaker.ref.interactionCallbackName @intrs_cb_index
     @intrs_cb_index++
 
     @::[callbackName] = fn
@@ -27,8 +27,8 @@ class SneakerView extends Sneaker.Core
     Sneaker.util.type hooksHash, 'object',
      '@has_hook expects to be passed a hash of name/selector pairs'
 
-    @::[Sneaker.convention.hooksName()] = jQuery.extend( true,
-      {}, @::[Sneaker.convention.hooksName()], hooksHash
+    @::[Sneaker.ref.hooksName()] = jQuery.extend( true,
+      {}, @::[Sneaker.ref.hooksName()], hooksHash
     )
     return
   @has_hooks: @has_hook
@@ -39,7 +39,7 @@ class SneakerView extends Sneaker.Core
     if not ((new box) instanceof Sneaker.Box)
       Sneaker.util.throw '@has_box expects the second argument to be a descendent of Sneaker.Box'
       
-    boxes = Sneaker.convention.boxesName()
+    boxes = Sneaker.ref.boxesName()
     @::[boxes] = jQuery.extend true, {}, @::[boxes]
     @::[boxes][name] = box
     return
@@ -47,13 +47,13 @@ class SneakerView extends Sneaker.Core
   @has_base: (templateFn) ->
     Sneaker.util.type templateFn, 'function',
       '@has_base expects to be passed a function'
-    @::[Sneaker.convention.templateName 'base'] = templateFn
+    @::[Sneaker.ref.templateName 'base'] = templateFn
     return
 
   @has_anchor: (selector) ->
     Sneaker.util.type name, 'string',
       '@has_anchor expects a string to run as a selector against the document'
-    @::[Sneaker.convention.anchorName()] = selector
+    @::[Sneaker.ref.anchorName()] = selector
 
   @has_template: (name, fn) ->
     Sneaker.util.type name, 'string',
@@ -61,7 +61,7 @@ class SneakerView extends Sneaker.Core
     Sneaker.util.type fn, 'function',
       '@has_template expects the second argument to be a function'
 
-    @::[Sneaker.convention.templateName name] = fn
+    @::[Sneaker.ref.templateName name] = fn
     return
 
   #====================================#
@@ -71,15 +71,15 @@ class SneakerView extends Sneaker.Core
       localDom: jQuery()
       dom: {}
     @dom = @ref.dom
-    if @[Sneaker.convention.boxesName()]
+    if @[Sneaker.ref.boxesName()]
       @ref.boxes = {}
-      for name, box of @[Sneaker.convention.boxesName()]
+      for name, box of @[Sneaker.ref.boxesName()]
         @ref.boxes[name] = new box
         @[name] = @ref.boxes[name]
 
   @has_init 'View: anchoring', ->
     base = @render('base')
-    anchor = @[Sneaker.convention.anchorName()]
+    anchor = @[Sneaker.ref.anchorName()]
     @dom.base = @ref.localDom = if base?
       base.to_jQuery()
     else if anchor?
@@ -89,14 +89,14 @@ class SneakerView extends Sneaker.Core
     do @rehook
 
   @has_init 'View: handler delegation', ->
-    if @dom.base? and @[Sneaker.convention.interactionsName()]
-      for interaction in @[Sneaker.convention.interactionsName()]
+    if @dom.base? and @[Sneaker.ref.interactionsName()]
+      for interaction in @[Sneaker.ref.interactionsName()]
         do (interaction) =>
           if interaction.hook is 'base'
             @dom.base.on interaction.types, (event) =>
               @[interaction.fn].call @, event
           else
-            selector = Sneaker.ns.get @[Sneaker.convention.hooksName()], interaction.hook
+            selector = Sneaker.ns.get @[Sneaker.ref.hooksName()], interaction.hook
             if selector?
               @dom.base.on interaction.types, selector, (event) =>
                 @[interaction.fn].call @, event
@@ -130,12 +130,12 @@ class SneakerView extends Sneaker.Core
               branch[name] = jQuery selector, ref.localDom
               return
         return
-      recurse @[Sneaker.convention.hooksName()]
+      recurse @[Sneaker.ref.hooksName()]
       return
     return
 
   render: (name) ->
-    template = @[Sneaker.convention.templateName name]
+    template = @[Sneaker.ref.templateName name]
     return new Sneaker.Press( template, @ref.dom ) if template?
     return
 

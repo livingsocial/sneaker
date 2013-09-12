@@ -2,8 +2,8 @@ describe 'Sneaker Press', ->
   it 'resides at Sneaker.Press on the global scope', ->
     expect( Sneaker.Press ).toBeDefined()
 
-  it 'does not extend Sneaker.Core', ->
-    expect( Sneaker.Press ).not.toExtend Sneaker.Core
+  it 'extends Sneaker.Core', ->
+    expect( Sneaker.Press ).toExtend Sneaker.Core
 
 
   describe '#constructor( [templateFunction] [, textOnly] )', ->

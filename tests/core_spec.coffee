@@ -3,113 +3,113 @@ describe 'Sneaker Core', ->
     expect( Sneaker ).toBeDefined()
 
 
-  describe 'Conventions', ->
-    it 'are collected at Sneaker.convention', ->
-      expect( Sneaker.convention ).toBeDefined()
-    describe '#boxesName - boxes naming convention', ->
-      it 'defines this convention as `__boxes`', ->
-        expect( Sneaker.convention.boxesName() ).toMatch '__boxes'
-    describe '#handlerName - handler naming convention', ->
-      it 'defines this convention as `__handle_` followed by the name given', ->
-        expect( Sneaker.convention.handlerName 'foo' ).toMatch '__handle_foo'
-    describe '#hooksName - DOM hooks naming convention', ->
-      it 'defines this convention as `__hooks`', ->
-        expect( Sneaker.convention.hooksName() ).toMatch '__hooks'
-    describe '#interactionCallbackName - event callback naming convention', ->
-      it 'defines this convention as `__interaction_cb_` followed by an incremented integer', ->
-        expect( Sneaker.convention.interactionCallbackName 1 ).toMatch '__interaction_cb_1'
-    describe '#interactionsName - event handlers naming convention', ->
-      it 'defines this convention as `__interactions`', ->
-        expect( Sneaker.convention.interactionsName() ).toMatch '__interactions'
-    describe '#requestDefaultsName - request defaults naming convention', ->
-      it 'defines this convention as `__requestDefaults`', ->
-        expect( Sneaker.convention.requestDefaultsName() ).toMatch '__requestDefaults'
-    describe '#requestName - API request generation function naming convention', ->
-      it 'defines this convention as `__request_` followed by the name given', ->
-        expect( Sneaker.convention.requestName 'foo' ).toMatch '__request_foo'
-    describe '#responsesName - responses naming convention', ->
-      it 'defines this convention as `__responses`', ->
-        expect( Sneaker.convention.responsesName() ).toMatch '__responses'
-    describe '#responseName - response naming convention', ->
-      it 'defines this convention as `__response_` followed by the name given', ->
-        expect( Sneaker.convention.responseName 'foo' ).toMatch '__response_foo'
-    describe '#templateName - template naming convention', ->
-      it 'defines this convention as `__template_` followed by the name given', ->
-        expect( Sneaker.convention.templateName 'foo' ).toMatch '__template_foo'
+  describe 'Refs', ->
+    it 'are collected at Sneaker.ref', ->
+      expect( Sneaker.ref ).toBeDefined()
+    describe '#boxesName - boxes naming ref', ->
+      it 'defines this ref as `__boxes`', ->
+        expect( Sneaker.ref.boxesName() ).toMatch '__boxes'
+    describe '#handlerName - handler naming ref', ->
+      it 'defines this ref as `__handle_` followed by the name given', ->
+        expect( Sneaker.ref.handlerName 'foo' ).toMatch '__handle_foo'
+    describe '#hooksName - DOM hooks naming ref', ->
+      it 'defines this ref as `__hooks`', ->
+        expect( Sneaker.ref.hooksName() ).toMatch '__hooks'
+    describe '#interactionCallbackName - event callback naming ref', ->
+      it 'defines this ref as `__interaction_cb_` followed by an incremented integer', ->
+        expect( Sneaker.ref.interactionCallbackName 1 ).toMatch '__interaction_cb_1'
+    describe '#interactionsName - event handlers naming ref', ->
+      it 'defines this ref as `__interactions`', ->
+        expect( Sneaker.ref.interactionsName() ).toMatch '__interactions'
+    describe '#requestDefaultsName - request defaults naming ref', ->
+      it 'defines this ref as `__requestDefaults`', ->
+        expect( Sneaker.ref.requestDefaultsName() ).toMatch '__requestDefaults'
+    describe '#requestName - API request generation function naming ref', ->
+      it 'defines this ref as `__request_` followed by the name given', ->
+        expect( Sneaker.ref.requestName 'foo' ).toMatch '__request_foo'
+    describe '#responsesName - responses naming ref', ->
+      it 'defines this ref as `__responses`', ->
+        expect( Sneaker.ref.responsesName() ).toMatch '__responses'
+    describe '#responseName - response naming ref', ->
+      it 'defines this ref as `__response_` followed by the name given', ->
+        expect( Sneaker.ref.responseName 'foo' ).toMatch '__response_foo'
+    describe '#templateName - template naming ref', ->
+      it 'defines this ref as `__template_` followed by the name given', ->
+        expect( Sneaker.ref.templateName 'foo' ).toMatch '__template_foo'
 
     describe 'extension', ->
       beforeEach ->
-        @restoreBoxes = Sneaker.convention.boxesName
-        @restoreHandler = Sneaker.convention.handlerName
-        @restoreHooks = Sneaker.convention.hooksName
-        @restoreInteractionCallback = Sneaker.convention.interactionCallbackName
-        @restoreInteractions = Sneaker.convention.interactionsName
-        @restoreRequestDefaults = Sneaker.convention.requestDefaultsName
-        @restoreRequestName = Sneaker.convention.requestName
-        @restoreResponses = Sneaker.convention.responsesName
-        @restoreResponse = Sneaker.convention.responseName
-        @restoreTemplate = Sneaker.convention.templateName
+        @restoreBoxes = Sneaker.ref.boxesName
+        @restoreHandler = Sneaker.ref.handlerName
+        @restoreHooks = Sneaker.ref.hooksName
+        @restoreInteractionCallback = Sneaker.ref.interactionCallbackName
+        @restoreInteractions = Sneaker.ref.interactionsName
+        @restoreRequestDefaults = Sneaker.ref.requestDefaultsName
+        @restoreRequestName = Sneaker.ref.requestName
+        @restoreResponses = Sneaker.ref.responsesName
+        @restoreResponse = Sneaker.ref.responseName
+        @restoreTemplate = Sneaker.ref.templateName
       afterEach ->
-        Sneaker.convention.boxesName = @restoreBoxes
-        Sneaker.convention.handlerName = @restoreHandler
-        Sneaker.convention.hooksName = @restoreHooks
-        Sneaker.convention.interactionCallbackName = @restoreInteractionCallback
-        Sneaker.convention.interactionsName = @restoreInteractions
-        Sneaker.convention.requestDefaultsName = @restoreRequestDefaults
-        Sneaker.convention.requestName = @restoreRequestName
-        Sneaker.convention.responsesName = @restoreResponses
-        Sneaker.convention.responseName = @restoreResponse
-        Sneaker.convention.templateName = @restoreTemplate
+        Sneaker.ref.boxesName = @restoreBoxes
+        Sneaker.ref.handlerName = @restoreHandler
+        Sneaker.ref.hooksName = @restoreHooks
+        Sneaker.ref.interactionCallbackName = @restoreInteractionCallback
+        Sneaker.ref.interactionsName = @restoreInteractions
+        Sneaker.ref.requestDefaultsName = @restoreRequestDefaults
+        Sneaker.ref.requestName = @restoreRequestName
+        Sneaker.ref.responsesName = @restoreResponses
+        Sneaker.ref.responseName = @restoreResponse
+        Sneaker.ref.templateName = @restoreTemplate
 
       it 'a different name for the boxes array may be defined', ->
-        Sneaker.convention.boxesName = -> '__cardboard'
+        Sneaker.ref.boxesName = -> '__cardboard'
         class Foo extends Sneaker.View
           @has_box 'recycles'
         expect( Foo::__cardboard ).toBeDefined()
       it 'a different handler naming pattern may be defined', ->
-        Sneaker.convention.handlerName = (name) -> "__yackadee_#{name}"
+        Sneaker.ref.handlerName = (name) -> "__yackadee_#{name}"
         class Foo extends Sneaker.View
           @has_handler 'bar', ->
         expect( Foo::__yackadee_bar ).toBeDefined()
       it 'a different name for the hooks object may be defined', ->
-        Sneaker.convention.hooksName = -> "__yarrCaptainHook"
+        Sneaker.ref.hooksName = -> "__yarrCaptainHook"
         class Foo extends Sneaker.View
           @has_hook
             smee:
               firstMate: '.yarr'
           expect( Foo::__yarrCaptainHook ).toBeDefined()
       it 'a different interaction callback naming pattern may be defined', ->
-        Sneaker.convention.interactionCallbackName = (index) -> "__conjunction_#{index}"
+        Sneaker.ref.interactionCallbackName = (index) -> "__conjunction_#{index}"
         class Foo extends Sneaker.View
           @has_listener 'click', 'base', -> console.log 'hookin up words and phrases and clauses'
         expect( Foo::__conjunction_0 ).toBeDefined()
       it 'a different name for the interactions object may be defined', ->
-        Sneaker.convention.interactionsName = -> "__conjunction_junction"
+        Sneaker.ref.interactionsName = -> "__conjunction_junction"
         class Foo extends Sneaker.View
           @has_listener 'click', 'base', -> console.log 'whats your function'
         expect( Foo::__conjunction_junction ).toBeDefined()
       it 'a different name for the request defaults object may be defined', ->
-        Sneaker.convention.requestDefaultsName = -> "__ajaxDefaults"
+        Sneaker.ref.requestDefaultsName = -> "__ajaxDefaults"
         class Foo extends Sneaker.Api
           @has_default type: 'POST'
         expect( Foo::__ajaxDefaults ).toBeDefined()
       it 'a different request naming pattern may be defined', ->
-        Sneaker.convention.requestName = (name) -> "__query_#{name}"
+        Sneaker.ref.requestName = (name) -> "__query_#{name}"
         class Foo extends Sneaker.Api
           @has_request 'bar', ->
         expect( Foo::__query_bar ).toBeDefined()
       it 'a different name for the responses array may be defined', ->
-        Sneaker.convention.responsesName = -> "__mockedResponses"
+        Sneaker.ref.responsesName = -> "__mockedResponses"
         class Foo extends Sneaker.ApiMock
           @has_response 'bar', ->
         expect( Foo::__mockedResponses ).toBeDefined()
       it 'a different response naming pattern may be defined', ->
-        Sneaker.convention.responseName = (name) -> "__mock_#{name}"
+        Sneaker.ref.responseName = (name) -> "__mock_#{name}"
         class Foo extends Sneaker.ApiMock
           @has_response 'bar', ->
         expect( Foo::__mock_bar ).toBeDefined()
       it 'a different template naming pattern may be defined', ->
-        Sneaker.convention.templateName = (name) -> "__yak_#{name}"
+        Sneaker.ref.templateName = (name) -> "__yak_#{name}"
         class Foo extends Sneaker.View
           @has_template 'bar', ->
         expect( Foo::__yak_bar ).toBeDefined()
@@ -255,7 +255,7 @@ describe 'Sneaker Core', ->
         expect( (new Sneaker.Core ).handle instanceof Function ).toBe true
 
       describe 'takes the handler phrase as the first argument', ->
-        it 'looks for `__handle_{{name}}` (under default conventions) and calls it'
+        it 'looks for `__handle_{{name}}` (under default refs) and calls it'
         class Foo extends Sneaker.Core
           @has_handler 'trigger this handler', ->
         instance = new Foo

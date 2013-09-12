@@ -4,9 +4,9 @@ class SneakerApiMock
     Sneaker.util.type name, 'string', '@response expects `name` to be a string'
     Sneaker.util.type fn, 'function', '@response expects the second argument to be a function'
 
-    responses = Sneaker.convention.responsesName()
+    responses = Sneaker.ref.responsesName()
     (@::[responses] = (@::[responses] || []).slice 0).push name
-    @::[Sneaker.convention.responseName name] = fn
+    @::[Sneaker.ref.responseName name] = fn
 
   respond: (mockedResponse = {}) ->
     status = mockedResponse.status ||= 200

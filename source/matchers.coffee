@@ -2,14 +2,14 @@ beforeEach ->
 
   toHandle = (expected) ->
     name = @actual.name
-    handler = @actual::[Sneaker.convention.handlerName expected]
+    handler = @actual::[Sneaker.ref.handlerName expected]
     nt = if @isNot then 'not handle' else 'handle'
     @message = -> "Expected #{name} to #{nt} events where action is `#{expected}`."
     handler?
 
   toHook = (namespace, selector) ->
     name = @actual.name
-    hooks = @actual::[Sneaker.convention.hooksName()]
+    hooks = @actual::[Sneaker.ref.hooksName()]
     nt = if @isNot then 'not have' else 'have'
     @message = -> "Expected #{name} to #{nt} hook `#{selector}` to `#{namespace}`."
     if selector?
@@ -23,7 +23,7 @@ beforeEach ->
     nt = if @isNot then 'not' else ''
     @message = -> "Expected #{name} to #{nt} listen for `#{event}` at `#{namespace}`"
     found = false
-    for interaction in @actual::[Sneaker.convention.interactionsName()]
+    for interaction in @actual::[Sneaker.ref.interactionsName()]
       if not found
         if interaction.hook is hookPath
           types = interaction.types.split(' ')
@@ -35,14 +35,14 @@ beforeEach ->
     nt = if @isNot then 'not have' else 'have'
     name = @actual.name
     @message = -> "Expected #{name} to #{nt} a box at #{name}"
-    boxes = @actual::[Sneaker.convention.boxesName()]
+    boxes = @actual::[Sneaker.ref.boxesName()]
     if boxes?
       boxes[boxName] is box and (new @actual)[boxName] instanceof box
     else false
 
   toTemplate = (expected) ->
     name = @actual.name
-    template = @actual::[Sneaker.convention.templateName expected]
+    template = @actual::[Sneaker.ref.templateName expected]
     nt = if @isNot then 'not have' else 'have'
     @message = -> "Expected #{name} to #{nt} a template named `#{expected}`"
     template?
@@ -94,4 +94,4 @@ beforeEach ->
       name = @actual.name
       nt = if @isNot then 'not have' else 'have'
       @message = -> "Expected #{name} to #{nt} a request named #{phrase}."
-      @actual::[Sneaker.convention.requestName phrase]?
+      @actual::[Sneaker.ref.requestName phrase]?

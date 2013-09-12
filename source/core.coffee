@@ -1,6 +1,6 @@
 this.Sneaker ||= {}
 
-this.Sneaker.convention =
+this.Sneaker.ref =
   anchorName:                       -> "__anchor"
   boxesName:                        -> "__boxes"
   handlerName:               (name) -> "__handle_#{name}"
@@ -83,12 +83,12 @@ class SneakerCore
     Sneaker.util.type fn, 'function',
       '@has_handler expects the second argument to be a function'
 
-    @::[Sneaker.convention.handlerName phrase] = fn
+    @::[Sneaker.ref.handlerName phrase] = fn
     return
 
   handle: (phrase, eventAttributes) ->
     if Sneaker.util.type phrase, 'string'
-      handler = @[Sneaker.convention.handlerName phrase]
+      handler = @[Sneaker.ref.handlerName phrase]
       handler.call @, eventAttributes if handler?
 
 
@@ -105,8 +105,8 @@ class SneakerCore
           "@has_#{end} expects provided indicies to be an array"
         Sneaker.util.type callback, 'function',
           "@has_#{end} expects the callback to be a function"
-        @::[Sneaker.convention["#{end}Name"] name] = [callback, indicies]
-        collection = Sneaker.convention["#{end}sName"]()
+        @::[Sneaker.ref["#{end}Name"] name] = [callback, indicies]
+        collection = Sneaker.ref["#{end}sName"]()
         @::[collection] = if @::[collection] then @::[collection][..] else []
         @::[collection].push name
         @::[collection] = Sneaker.util.uniq @::[collection]
@@ -117,13 +117,13 @@ class SneakerCore
       when 'init', 'quit'
         Sneaker.util.type order, 'array',
           "@has_#{end}_order expects an array"
-        @::[Sneaker.convention["#{end}sOrderName"]()] = order
+        @::[Sneaker.ref["#{end}sOrderName"]()] = order
     return
 
   skips_bookend = (end, name) ->
     switch end
       when 'init', 'quit'
-        skip = Sneaker.convention["#{end}sSkipName"]()
+        skip = Sneaker.ref["#{end}sSkipName"]()
         @::[skip] = if @::[skip] then @::[skip][..] else []
         @::[skip].push name
     return
@@ -131,7 +131,7 @@ class SneakerCore
   runs_bookend = (end, name) ->
     switch end
       when 'init', 'quit'
-        skip = Sneaker.convention["#{end}sSkipName"]()
+        skip = Sneaker.ref["#{end}sSkipName"]()
         @::[skip] = if @::[skip] then @::[skip][..] else []
         index = @::[skip].indexOf name
         @::[skip].splice index, 1 if index >= 0
@@ -150,24 +150,24 @@ class SneakerCore
 
   run_bookends = (end, args) ->
     run_an_bookend = (name, original_arguments) ->
-      if @[Sneaker.convention["#{end}Name"] name]?
-        indicies = @[Sneaker.convention["#{end}Name"] name][1]
+      if @[Sneaker.ref["#{end}Name"] name]?
+        indicies = @[Sneaker.ref["#{end}Name"] name][1]
         if indicies?.length > 0
           use_args = for index in indicies
             original_arguments[index]
         else
           use_args = original_arguments
-        @[Sneaker.convention["#{end}Name"] name][0].apply this, use_args
+        @[Sneaker.ref["#{end}Name"] name][0].apply this, use_args
 
     switch end
       when 'init', 'quit'
         already_ran = []
-        for skip in (@[Sneaker.convention["#{end}sSkipName"]()] or [])
+        for skip in (@[Sneaker.ref["#{end}sSkipName"]()] or [])
           already_ran.push skip
-        for ordered in (@[Sneaker.convention["#{end}sOrderName"]()] or [])
+        for ordered in (@[Sneaker.ref["#{end}sOrderName"]()] or [])
           run_an_bookend.call this, ordered, args unless already_ran.indexOf(ordered) >= 0
           already_ran.push ordered
-        for bookend in (@[Sneaker.convention["#{end}sName"]()] or [])
+        for bookend in (@[Sneaker.ref["#{end}sName"]()] or [])
           run_an_bookend.call this, bookend, args unless already_ran.indexOf(bookend) >= 0
     return
 
