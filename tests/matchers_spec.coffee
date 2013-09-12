@@ -1,23 +1,14 @@
 describe 'Jasmine matchers for Sneaker', ->
 
-  describe '#toExtend', ->
-    it 'can text whether a class extends another class', ->
-      class Foo extends Sneaker.View
-      expect( Foo ).toExtend Sneaker.View
-    it 'can test whether a class does not extend another class', ->
-      class Foo extends Sneaker.View
-      expect( Foo ).not.toExtend Sneaker.Api
-
-
-  describe '#toHandle', ->
+  describe '#toHaveHandler', ->
     it 'can test whether a class is equipped to handle an event of a particular name', ->
       class Foo extends Sneaker.View
         @has_handler 'bar', ->
-      expect( Foo ).toHandle 'bar'
+      expect( Foo ).toHaveHandler 'bar'
     it 'can test whether a class is not equipped to handle an event of a particular name', ->
       class Foo extends Sneaker.View
         @has_handler 'bar', ->
-      expect( Foo ).not.toHandle 'baz'
+      expect( Foo ).not.toHaveHandler 'baz'
     it 'has an alias #toHaveHandler', ->
       class Foo extends Sneaker.View
         @has_handler 'bar', ->
@@ -26,24 +17,23 @@ describe 'Jasmine matchers for Sneaker', ->
         @has_handler 'bar', ->
       expect( Foo ).not.toHaveHandler 'baz'
 
-
-  describe '#toHook', ->
+  describe '#toHaveHook', ->
     it 'can test whether a class is written to establish a hook at the given namespace and selector', ->
       class Foo extends Sneaker.View
         @has_hook foo: bar: '.baz'
-      expect( Foo ).toHook 'foo.bar', '.baz'
+      expect( Foo ).toHaveHook 'foo.bar', '.baz'
     it 'can test whether a class is not written to establish a hook at the given namespace and selector', ->
       class Foo extends Sneaker.View
         @has_hook foo: bar: '.baz'
-      expect( Foo ).toHook 'foo.bar', '.baz'
+      expect( Foo ).toHaveHook 'foo.bar', '.baz'
     it 'can test whether a class is written to establish a hook at the given namespace (selector omitted)', ->
       class Foo extends Sneaker.View
         @has_hook foo: 'bar'
-      expect( Foo ).toHook 'foo'
+      expect( Foo ).toHaveHook 'foo'
     it 'can test whether a class is not written to establish a hook at the given namespace (selector omitted)', ->
       class Foo extends Sneaker.View
         @has_hook foo: 'bar'
-      expect( Foo ).not.toHook 'baz'
+      expect( Foo ).not.toHaveHook 'baz'
     it 'has an alias #toHaveHook', ->
       class Foo extends Sneaker.View
         @has_hook foo: bar: '.baz'
@@ -52,18 +42,17 @@ describe 'Jasmine matchers for Sneaker', ->
         @has_hook foo: bar: '.baz'
       expect( Foo ).toHaveHook 'foo.bar', '.baz'
 
-
-  describe '#toListenFor', ->
+  describe '#toHaveListener', ->
     it 'can test whether a class is written to listen for a DOM event of a particular type/hook combination', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
         @has_listener 'click', 'a', ->
-      expect( Foo ).toListenFor 'click', 'a'
+      expect( Foo ).toHaveListener 'click', 'a'
     it 'can test whether a class is not written to listen for a DOM event of a particular type/hook combination', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
         @has_listener 'mouseover', 'a', ->
-      expect( Foo ).not.toListenFor 'click', 'a'
+      expect( Foo ).not.toHaveListener 'click', 'a'
     it 'has an alias #toHaveListener', ->
       class Foo extends Sneaker.View
         @has_hook a: '.a'
@@ -75,15 +64,15 @@ describe 'Jasmine matchers for Sneaker', ->
       expect( Foo ).not.toHaveListener 'click', 'a'
 
 
-  describe '#toTemplate', ->
+  describe '#toHaveTemplate', ->
     it 'can test whether a class has a template with the given name', ->
       class Foo extends Sneaker.View
         @has_template 'bar', ->
-      expect( Foo ).toTemplate 'bar'
+      expect( Foo ).toHaveTemplate 'bar'
     it 'can test whether a class does not have a template with the given name', ->
       class Foo extends Sneaker.View
         @has_template 'bar', ->
-      expect( Foo ).not.toTemplate 'baz'
+      expect( Foo ).not.toHaveTemplate 'baz'
     it 'has an alias #toHaveTemplate', ->
       class Foo extends Sneaker.View
         @has_template 'bar', ->
@@ -91,7 +80,6 @@ describe 'Jasmine matchers for Sneaker', ->
       class Foo extends Sneaker.View
         @has_template 'bar', ->
       expect( Foo ).not.toHaveTemplate 'baz'
-
 
   describe '#toHaveRequest', ->
     it 'can test whether an API has a request under the given phrase', ->
@@ -103,7 +91,13 @@ describe 'Jasmine matchers for Sneaker', ->
         @has_request 'bar', ->
       expect( Foo ).not.toHaveRequest 'rat'
 
-
+  describe '#toExtend', ->
+    it 'can text whether a class extends another class', ->
+      class Foo extends Sneaker.View
+      expect( Foo ).toExtend Sneaker.View
+    it 'can test whether a class does not extend another class', ->
+      class Foo extends Sneaker.View
+      expect( Foo ).not.toExtend Sneaker.Api
 
   describe '#toAlter', ->
     it 'can test whether executing a function changes something', ->
@@ -111,32 +105,25 @@ describe 'Jasmine matchers for Sneaker', ->
         init: -> @data = 0
         @has_handler 'change', ->
           @data = 1
-
       foo = new Foo
       expect( -> foo.handle 'change' ).toAlter -> foo.data
-
     it 'can test whether executing a function does not changes something', ->
       class Foo extends Sneaker.View
         init: -> @data = 0
         @has_handler 'change', -> #nothing
-
       foo = new Foo
       expect( -> foo.handle 'change' ).not.toAlter -> foo.data
-
 
   describe '#toAlterContentsOf', ->
     it 'can test whether executing a function changes the contents of an element', ->
       class Foo extends Sneaker.View
         @has_base -> '<div class="foo">bar</div>'
         @has_handler 'baz', -> @dom.base.html '<div class="baz">baz</div>'
-
       foo = new Foo
       expect( -> foo.handle 'baz' ).toAlterContentsOf foo.dom.base
-
     it 'can test whether executing a function does not change the contents of an element', ->
       class Foo extends Sneaker.View
         @has_base -> '<div class="foo">bar</div>'
         @has_handler 'baz', -> #nothing
-
       foo = new Foo
       expect( -> foo.handle 'baz' ).not.toAlterContentsOf foo.dom.base
