@@ -10,7 +10,6 @@ task :build do
     "source/core.coffee"
     "source/view.coffee"
     "source/press.coffee"
-    "source/box.coffee"
     "source/api.coffee"
     "source/apimock.coffee" )
   
