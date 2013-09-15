@@ -11,31 +11,28 @@ Sneaker is object-oriented, highly testable jQuery.
 Ready to get moving?
 
 ###Lace up
-1. Include `sneaker.coffee` as you would any other vendored script.
 
-2. [`jQuery 1.8 or later`](http://jquery.com/download/) is required.
-
-3. For testing with Jasmine, include `sneaker-matchers.coffee` into your spec manifest.
-
-4. [`Lo-Dash >= 1.0.1`](https://github.com/bestiejs/lodash/blob/master/lodash.js) is used by some of the matchers.
-
-5. [This ES5 shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js) is recommended if you need to support browsers that aren't fully down with ES5 arrays, so that `Sneaker.Box` is fully functional.
+1. [`jQuery 1.8` or later](http://jquery.com/download/) is required.
+4. [This ES5 shim](https://github.com/kriskowal/es5-shim/blob/master/es5-shim.js) is recommended if you need to support browsers that aren't fully down with ES5 stuff (\*cough\* IE).
+2. Include `sneaker.coffee` as you would any other vendored script.
+3. For testing with Jasmine, include `sneaker-matchers.coffee` into your spec manifest.  [`Lo-Dash >= 1.0.1`](https://github.com/bestiejs/lodash/blob/master/lodash.js) is used by some of the matchers.
 
 ###Read up
 Lots of useful words have been crammed in the [Wiki](https://github.com/livingsocial/sneaker/wiki).
-
-###Version Up
-0.8.2 - Aug 31 2013
 
 ###Tested up
 + Firefox >= 4.0.1
 + Internet Explorer >= 6.0
 + Current versions of Opera, Safari, and Chrome
 
+<hr>
+
 ###Credits
 Sneaker was extracted from work done on the LivingSocial Merchant Center by Chris Schetter.
 
 Sneaker surely wouldn't be a thing without the consideration and input of Kevin McConnell, Sara Flemming, Eric Brody, Rodrigo Franco, Michael Buffington, Jon Dodson, Tim Linquist, Mark Tabler, Elise Worthy, Jess Eldredge, Michael Zinn, Rein Heinrichs, Doug March, and Jonathan Phillips; and support from Maria Gutierrez, Ryan Owens, and Bruce Williams.
+
+<hr>
 
 ###Contributing
 Source code is found under `/source`.  Tests are found under `/tests`.
@@ -53,6 +50,3 @@ While guard is running, the coffeescript will be compiled to the same file name 
 ```bash
 $ bundle exec rake build
 ```
-
-Concatenates the coffeescript source to `sneaker.coffee`.
-Compiled javascript written to `sneaker.js`.

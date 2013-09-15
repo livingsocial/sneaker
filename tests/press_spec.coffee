@@ -2,9 +2,9 @@ describe 'Sneaker Press', ->
   it 'resides at Sneaker.Press on the global scope', ->
     expect( Sneaker.Press ).toBeDefined()
 
-  it 'does not extend Sneaker.Core', ->
-    expect( Sneaker.Press ).not.toExtend Sneaker.Core
-    
+  it 'extends Sneaker.Core', ->
+    expect( Sneaker.Press ).toExtend Sneaker.Core
+
 
   describe '#constructor( [templateFunction] [, textOnly] )', ->
 
@@ -25,6 +25,8 @@ describe 'Sneaker Press', ->
         dom = {}
         foo = new Sneaker.Press undefined, dom
         expect( foo.dom ).toBe dom
+      it 'throws if @dom is not an object', ->
+        expect( -> new Sneaker.Press (->), 'string' ).toThrow()
 
     it 'assigns an empty object to @context', ->
       expect( _.isEqual (new Sneaker.Press).context, {} ).toBe true
@@ -84,7 +86,8 @@ describe 'Sneaker Press', ->
 
   describe 'rendering and putting the result someplace', ->
     beforeEach ->
-      loadFixtures 'press'
+      @target = $('<div><i>i</i></div><div><i>i</i></div>').filter 'div'
+      @simple_target = $ '<div class="press"><div></div><div></div></div>'
 
     describe '#top', ->
       it 'returns the Press object so as to be chainable, regardless of argument validity', ->
@@ -92,19 +95,16 @@ describe 'Sneaker Press', ->
         expect( foo.top() ).toBe foo
       describe 'when given a jQuery', ->
         it 'prepends the pressed template result to the element(s) given', ->
-          target = $('<div><i>i</i></div><div><i>i</i></div>').filter 'div'
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.top target
-          expect( $ target[0].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
-          expect( $ target[1].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
+          foo.top @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
       describe 'when given a string and the dom context is empty', ->
         it 'runs that as a selector against the document, and prepends to the result', ->
-          $('.press').append '<div><i>i</i></div><div><i>i</i></div>'
-          target = $('.press div')
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.top '.press div'
-          expect( $ target[0].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
-          expect( $ target[1].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
+          foo.top @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<span>span!</span><i>i</i>'
       describe 'when given a string that matches a dom context selector provided on instantiation', ->
         it 'prepends the pressed template to the context given', ->
           class View extends Sneaker.View
@@ -121,19 +121,16 @@ describe 'Sneaker Press', ->
         expect( foo.end() ).toBe foo
       describe 'when given a jQuery', ->
         it 'appends the pressed template result to the element(s) given', ->
-          target = $('<div><i>i</i></div><div><i>i</i></div>').filter 'div'
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.end target
-          expect( $ target[0].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
-          expect( $ target[1].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
+          foo.end @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
       describe 'when given a string and the dom context is empty', ->
         it 'runs that as a selector against the document, and appends to the result', ->
-          $('.press').append '<div><i>i</i></div><div><i>i</i></div>'
-          target = $('.press div')
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.end '.press div'
-          expect( $ target[0].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
-          expect( $ target[1].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
+          foo.end @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<i>i</i><span>span!</span>'
       describe 'when given a string that matches a dom context selector provided on instantiation', ->
         it 'appends the pressed template to the context given', ->
           class View extends Sneaker.View
@@ -150,19 +147,16 @@ describe 'Sneaker Press', ->
         expect( foo.as() ).toBe foo
       describe 'when given a jQuery', ->
         it 'replaces the contents of the element(s) given with the pressed template', ->
-          target = $('<div><i>i</i></div><div><i>i</i></div>').filter 'div'
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.as target
-          expect( $ target[0].innerHTML ).toMatch $ '<span>span!</span>'
-          expect( $ target[1].innerHTML ).toMatch $ '<span>span!</span>'
+          foo.as @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<span>span!</span>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<span>span!</span>'
       describe 'when given a string and the dom context is empty', ->
         it 'runs that as a selector against the document, and replaces the contents of the result', ->
-          $('.press').append '<div><i>i</i></div><div><i>i</i></div>'
-          target = $('.press div')
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.as '.press div'
-          expect( $ target[0].innerHTML ).toMatch $ '<span>span!</span>'
-          expect( $ target[1].innerHTML ).toMatch $ '<span>span!</span>'
+          foo.as @target
+          expect( $ @target[0].innerHTML ).toMatch $ '<span>span!</span>'
+          expect( $ @target[1].innerHTML ).toMatch $ '<span>span!</span>'
       describe 'when given a string that matches a dom context selector provided on instantiation', ->
         it 'replaces the contents of the context given with the pressed template', ->
           class View extends Sneaker.View
@@ -205,16 +199,16 @@ describe 'Sneaker Press', ->
         expect( foo.after() ).toBe foo
       describe 'when given a jQuery', ->
         it 'inserts the result of the pressed template after the selected element(s)', ->
-          $('.press').append '<div></div><div></div>'
+          target = @simple_target.find('div')
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.after $('.press div')
-          expect( $ $('.press').html() ).toMatch $ '<div></div><span>span!</span><div></div><span>span!</span>'
+          foo.after target
+          expect( $ @simple_target.html() ).toMatch $ '<div class="press"<div></div><span>span!</span><div></div><span>span!</span></div>'
       describe 'when given a string and the dom context is empty', ->
         it 'inserts the result of the pressed template before the selected element(s)', ->
-          $('.press').append '<div></div><div></div>'
+          target = @simple_target.find('div')
           foo = new Sneaker.Press -> '<span>span!</span>'
-          foo.after '.press div'
-          expect( $ $('.press').html() ).toMatch $ '<div></div><span>span!</span><div></div><span>span!</span>'
+          foo.after target
+          expect( $ @simple_target.html() ).toMatch $ '<div class="press"><div></div><span>span!</span><div></div><span>span!</span></div>'
       describe 'when given a string that matches a dom context selector provided on instantiation', ->
         it 'inserts the pressed template after each context given', ->
           class View extends Sneaker.View

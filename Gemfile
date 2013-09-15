@@ -11,8 +11,6 @@ group :development, :test do
 
   gem 'thin'
   
-  gem 'jquery-rails'
-  
   gem 'jasmine'
   gem 'jasminerice'
   gem 'guard-jasmine'
