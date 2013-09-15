@@ -3,121 +3,6 @@ describe 'Sneaker Core', ->
     expect( Sneaker ).toBeDefined()
 
 
-  describe 'Conventions', ->
-    it 'are collected at Sneaker.convention', ->
-      expect( Sneaker.convention ).toBeDefined()
-    describe '#boxesName - boxes naming convention', ->
-      it 'defines this convention as `__boxes`', ->
-        expect( Sneaker.convention.boxesName() ).toMatch '__boxes'
-    describe '#handlerName - handler naming convention', ->
-      it 'defines this convention as `__handle_` followed by the name given', ->
-        expect( Sneaker.convention.handlerName 'foo' ).toMatch '__handle_foo'
-    describe '#hooksName - DOM hooks naming convention', ->
-      it 'defines this convention as `__hooks`', ->
-        expect( Sneaker.convention.hooksName() ).toMatch '__hooks'
-    describe '#interactionCallbackName - event callback naming convention', ->
-      it 'defines this convention as `__interaction_cb_` followed by an incremented integer', ->
-        expect( Sneaker.convention.interactionCallbackName 1 ).toMatch '__interaction_cb_1'
-    describe '#interactionsName - event handlers naming convention', ->
-      it 'defines this convention as `__interactions`', ->
-        expect( Sneaker.convention.interactionsName() ).toMatch '__interactions'
-    describe '#requestDefaultsName - request defaults naming convention', ->
-      it 'defines this convention as `__requestDefaults`', ->
-        expect( Sneaker.convention.requestDefaultsName() ).toMatch '__requestDefaults'
-    describe '#requestName - API request generation function naming convention', ->
-      it 'defines this convention as `__request_` followed by the name given', ->
-        expect( Sneaker.convention.requestName 'foo' ).toMatch '__request_foo'
-    describe '#responsesName - responses naming convention', ->
-      it 'defines this convention as `__responses`', ->
-        expect( Sneaker.convention.responsesName() ).toMatch '__responses'
-    describe '#responseName - response naming convention', ->
-      it 'defines this convention as `__response_` followed by the name given', ->
-        expect( Sneaker.convention.responseName 'foo' ).toMatch '__response_foo'
-    describe '#templateName - template naming convention', ->
-      it 'defines this convention as `__template_` followed by the name given', ->
-        expect( Sneaker.convention.templateName 'foo' ).toMatch '__template_foo'
-
-    describe 'extension', ->
-      beforeEach ->
-        @restoreBoxes = Sneaker.convention.boxesName
-        @restoreHandler = Sneaker.convention.handlerName
-        @restoreHooks = Sneaker.convention.hooksName
-        @restoreInteractionCallback = Sneaker.convention.interactionCallbackName
-        @restoreInteractions = Sneaker.convention.interactionsName
-        @restoreRequestDefaults = Sneaker.convention.requestDefaultsName
-        @restoreRequestName = Sneaker.convention.requestName
-        @restoreResponses = Sneaker.convention.responsesName
-        @restoreResponse = Sneaker.convention.responseName
-        @restoreTemplate = Sneaker.convention.templateName
-      afterEach ->
-        Sneaker.convention.boxesName = @restoreBoxes
-        Sneaker.convention.handlerName = @restoreHandler
-        Sneaker.convention.hooksName = @restoreHooks
-        Sneaker.convention.interactionCallbackName = @restoreInteractionCallback
-        Sneaker.convention.interactionsName = @restoreInteractions
-        Sneaker.convention.requestDefaultsName = @restoreRequestDefaults
-        Sneaker.convention.requestName = @restoreRequestName
-        Sneaker.convention.responsesName = @restoreResponses
-        Sneaker.convention.responseName = @restoreResponse
-        Sneaker.convention.templateName = @restoreTemplate
-
-      it 'a different name for the boxes array may be defined', ->
-        Sneaker.convention.boxesName = -> '__cardboard'
-        class Foo extends Sneaker.View
-          @has_box 'recycles'
-        expect( Foo::__cardboard ).toBeDefined()
-      it 'a different handler naming pattern may be defined', ->
-        Sneaker.convention.handlerName = (name) -> "__yackadee_#{name}"
-        class Foo extends Sneaker.View
-          @has_handler 'bar', ->
-        expect( Foo::__yackadee_bar ).toBeDefined()
-      it 'a different name for the hooks object may be defined', ->
-        Sneaker.convention.hooksName = -> "__yarrCaptainHook"
-        class Foo extends Sneaker.View
-          @has_hook
-            smee:
-              firstMate: '.yarr'
-          expect( Foo::__yarrCaptainHook ).toBeDefined()
-      it 'a different interaction callback naming pattern may be defined', ->
-        Sneaker.convention.interactionCallbackName = (index) -> "__conjunction_#{index}"
-        class Foo extends Sneaker.View
-          @has_listener 'click', 'base', -> console.log 'hookin up words and phrases and clauses'
-        expect( Foo::__conjunction_0 ).toBeDefined()
-      it 'a different name for the interactions object may be defined', ->
-        Sneaker.convention.interactionsName = -> "__conjunction_junction"
-        class Foo extends Sneaker.View
-          @has_listener 'click', 'base', -> console.log 'whats your function'
-        expect( Foo::__conjunction_junction ).toBeDefined()
-      it 'a different name for the request defaults object may be defined', ->
-        Sneaker.convention.requestDefaultsName = -> "__ajaxDefaults"
-        class Foo extends Sneaker.Api
-          @has_default type: 'POST'
-        expect( Foo::__ajaxDefaults ).toBeDefined()
-      it 'a different request naming pattern may be defined', ->
-        Sneaker.convention.requestName = (name) -> "__query_#{name}"
-        class Foo extends Sneaker.Api
-          @has_request 'bar', ->
-        expect( Foo::__query_bar ).toBeDefined()
-      it 'a different name for the responses array may be defined', ->
-        Sneaker.convention.responsesName = -> "__mockedResponses"
-        class Foo extends Sneaker.ApiMock
-          @has_response 'bar', ->
-        expect( Foo::__mockedResponses ).toBeDefined()
-      it 'a different response naming pattern may be defined', ->
-        Sneaker.convention.responseName = (name) -> "__mock_#{name}"
-        class Foo extends Sneaker.ApiMock
-          @has_response 'bar', ->
-        expect( Foo::__mock_bar ).toBeDefined()
-      it 'a different template naming pattern may be defined', ->
-        Sneaker.convention.templateName = (name) -> "__yak_#{name}"
-        class Foo extends Sneaker.View
-          @has_template 'bar', ->
-        expect( Foo::__yak_bar ).toBeDefined()
-
-
-
-#==================================================================================================#
-
   describe 'Utility functions', ->
 
     describe '#type', ->
@@ -132,35 +17,6 @@ describe 'Sneaker Core', ->
       it 'takes an array and returns it uniquified!', ->
         expect( Sneaker.util.uniq [1,1,2,3,3,4,4] ).toEqual [1,2,3,4]
 
-    describe 'Sneaker module installation routine', ->
-      it 'resides at Sneaker.util.install', ->
-        expect( Sneaker.util.install ).toBeDefined()
-
-      it 'runs through prototype methods and adds them to the target class', ->
-        class Foo
-        class FooModule
-          bar: ->
-          baz: ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo::bar ).toBeDefined()
-        expect( Foo::baz ).toBeDefined()
-
-      it 'runs through constructor methods and adds them to the target class', ->
-        class Foo
-        class FooModule
-          @bar: ->
-          @baz: ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo.bar ).toBeDefined()
-        expect( Foo.baz ).toBeDefined()
-
-      it 'looks for a special static function @has_module_setup and runs that against the target', ->
-        class Foo extends Sneaker.Core
-        class FooModule
-          @has_module_setup: ->
-            @has_init 'b', ->
-        Sneaker.util.install FooModule, Foo
-        expect( Foo::__inits.length ).toBe 1
 
   describe 'Namespace functions', ->
 
@@ -220,6 +76,34 @@ describe 'Sneaker Core', ->
     it 'resides at Sneaker.Core on the global scope', ->
       expect( Sneaker.Core ).toBeDefined()
 
+    describe '@include( module )', ->
+      it 'has a constructor method @include for including modules', ->
+        expect( Sneaker.Core.include ).toBeDefined()
+      it 'runs through the constructor methods on the module object and adds them to this class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          @bar: ->
+          @baz: ->
+        Foo.include FooModule
+        expect( Foo.bar ).toBeDefined
+        expect( Foo.baz ).toBeDefined
+      it 'runs through the methods on the module object and adds them to the prototype of this class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          bar: ->
+          baz: ->
+        Foo.include FooModule
+        expect( Foo::bar ).toBeDefined()
+        expect( Foo::baz ).toBeDefined()
+      it 'looks for a special constructor method `@has_module_setup` and runs that against the class', ->
+        class Foo extends Sneaker.Core
+        class FooModule
+          @has_module_setup: ->
+            @has_init 'b', ->
+        Foo.include FooModule
+        expect( Foo::__inits.length ).toBe 1
+
+
     describe '@has_handler( phrase, fn )', ->
 
       it 'has a constructor method @has_handler', ->
@@ -255,7 +139,7 @@ describe 'Sneaker Core', ->
         expect( (new Sneaker.Core ).handle instanceof Function ).toBe true
 
       describe 'takes the handler phrase as the first argument', ->
-        it 'looks for `__handle_{{name}}` (under default conventions) and calls it'
+        it 'looks for `__handle_{{name}}` (under default refs) and calls it'
         class Foo extends Sneaker.Core
           @has_handler 'trigger this handler', ->
         instance = new Foo
@@ -279,11 +163,11 @@ describe 'Sneaker Core', ->
           @has_init 'bar', fn
         expect( Foo::__init_bar ).toBeDefined
         expect( Foo::__init_bar[0] ).toBe fn
-        expect( Foo::__init_bar[1] ).toMatch []
+        expect( Foo::__init_bar[1] ).toEqual []
       it 'adds the callback to the prototype with indicies', ->
         class Foo extends Sneaker.Core
           @has_init 'bar', [5,6], ->
-        expect( Foo::__init_bar[1] ).toMatch [5,6]
+        expect( Foo::__init_bar[1] ).toEqual [5,6]
       it 'adds the name to the end init array', ->
         class Foo extends Sneaker.Core
           @has_init 'bar', ->
@@ -333,13 +217,13 @@ describe 'Sneaker Core', ->
       it 'replaces the order array with the one provided', ->
         class Foo extends Sneaker.Core
           @has_init_order ['bar', 'baz']
-        expect( Foo::__inits_order ).toMatch ['bar', 'baz']
+        expect( Foo::__inits_order ).toEqual ['bar', 'baz']
         class Foo1 extends Foo
-        expect( Foo1::__inits_order ).toMatch ['bar', 'baz']
+        expect( Foo1::__inits_order ).toEqual ['bar', 'baz']
         class Foo2 extends Foo1
           @has_init_order ['baz', 'bar']
-        expect( Foo1::__inits_order ).toMatch ['bar', 'baz']
-        expect( Foo2::__inits_order ).toMatch ['baz', 'bar']
+        expect( Foo1::__inits_order ).toEqual ['bar', 'baz']
+        expect( Foo2::__inits_order ).toEqual ['baz', 'bar']
       it 'the callbacks are run in the order provided', ->
         class Foo extends Sneaker.Core
           @has_init 'foo', -> @x = 'foo'
@@ -361,7 +245,7 @@ describe 'Sneaker Core', ->
       it 'adds the name to the skip array', ->
         class Foo extends Sneaker.Core
           @skips_init 'bar'
-        expect( Foo::__inits_skip ).toMatch ['bar']
+        expect( Foo::__inits_skip ).toEqual ['bar']
       it 'does not run the callbacks in the skip array', ->
         class Foo extends Sneaker.Core
           @has_init 'a', -> @x = 'a'
@@ -375,8 +259,8 @@ describe 'Sneaker Core', ->
           @skips_init 'bar'
         class Goo extends Foo
           @runs_init 'bar'
-        expect( Foo::__inits_skip ).toMatch ['bar']
-        expect( Goo::__inits_skip ).toMatch []
+        expect( Foo::__inits_skip ).toEqual ['bar']
+        expect( Goo::__inits_skip ).toEqual []
       it 'runs the callback', ->
         class Foo extends Sneaker.Core
           @has_init 'a', -> @x = 1
@@ -395,11 +279,11 @@ describe 'Sneaker Core', ->
           @has_quit 'bar', fn
         expect( Foo::__quit_bar ).toBeDefined
         expect( Foo::__quit_bar[0] ).toBe fn
-        expect( Foo::__quit_bar[1] ).toMatch []
+        expect( Foo::__quit_bar[1] ).toEqual []
       it 'adds the callback to the prototype with indicies', ->
         class Foo extends Sneaker.Core
           @has_quit 'bar', [5,6], ->
-        expect( Foo::__quit_bar[1] ).toMatch [5,6]
+        expect( Foo::__quit_bar[1] ).toEqual [5,6]
       it 'adds the name to the end quit array', ->
         class Foo extends Sneaker.Core
           @has_quit 'bar', ->
@@ -452,13 +336,13 @@ describe 'Sneaker Core', ->
       it 'replaces the order array with the one provided', ->
         class Foo extends Sneaker.Core
           @has_quit_order ['bar', 'baz']
-        expect( Foo::__quits_order ).toMatch ['bar', 'baz']
+        expect( Foo::__quits_order ).toEqual ['bar', 'baz']
         class Foo1 extends Foo
-        expect( Foo1::__quits_order ).toMatch ['bar', 'baz']
+        expect( Foo1::__quits_order ).toEqual ['bar', 'baz']
         class Foo2 extends Foo1
           @has_quit_order ['baz', 'bar']
-        expect( Foo1::__quits_order ).toMatch ['bar', 'baz']
-        expect( Foo2::__quits_order ).toMatch ['baz', 'bar']
+        expect( Foo1::__quits_order ).toEqual ['bar', 'baz']
+        expect( Foo2::__quits_order ).toEqual ['baz', 'bar']
       it 'the callbacks are run in the order provided', ->
         class Foo extends Sneaker.Core
           @has_quit 'foo', -> @x = 'foo'
@@ -486,7 +370,7 @@ describe 'Sneaker Core', ->
       it 'adds the name to the skip array', ->
         class Foo extends Sneaker.Core
           @skips_quit 'bar'
-        expect( Foo::__quits_skip ).toMatch ['bar']
+        expect( Foo::__quits_skip ).toEqual ['bar']
       it 'does not run the callbacks in the skip array', ->
         class Foo extends Sneaker.Core
           @has_quit 'a', -> @x = 'a'
@@ -502,8 +386,8 @@ describe 'Sneaker Core', ->
           @skips_quit 'bar'
         class Goo extends Foo
           @runs_quit 'bar'
-        expect( Foo::__quits_skip ).toMatch ['bar']
-        expect( Goo::__quits_skip ).toMatch []
+        expect( Foo::__quits_skip ).toEqual ['bar']
+        expect( Goo::__quits_skip ).toEqual []
       it 'runs the callback', ->
         class Foo extends Sneaker.Core
           @has_quit 'a', -> @x = 1
